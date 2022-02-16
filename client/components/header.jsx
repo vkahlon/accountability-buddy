@@ -4,11 +4,11 @@ export default function Header(props) {
 <>
       <div className='container-lg'>
         <div className='row'>
-          <div className='col-5 col-lg-5 d-flex justify-content-end'>
-            <img src="./images/ox1.png" alt="test" style={{ width: '150px' }} />
+          <div className='col-4 col-lg-5 d-flex justify-content-end'>
+            <img src="./images/ox1.png" alt="test" style={{ width: '130px' }} />
           </div>
-          <div className='col-6 col-lg-6'>
-            <h1 style={{ paddingTop: '4rem' }}>{props.header}</h1>
+          <div className='col-8 col-lg-6'>
+            <h2 style={{ paddingTop: '3.6rem' }}>{props.header}</h2>
           </div>
         </div>
       </div>
