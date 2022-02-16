@@ -22,28 +22,36 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
   }
   let bmr = 0;
   if (isMetric === 'no') {
-    height = Math.round(height * 2.54);
-    weight = Math.round(weight / 2.2);
+    height = height * 2.54;
+    weight = weight / 2.2;
   }
   if (gender === 'male') {
     age = age * 6.8;
     weight = 13.7 * weight;
     height = 5 * height;
     const hbe = 655;
-    bmr = Math.round(hbe + height + weight + age);
+    bmr = hbe + height + weight + age;
   } else if (gender === 'female') {
     age = age * 4.7;
     weight = 9.6 * weight;
     height = 1.8 * height;
     const hbe = 655;
-    bmr = Math.round(hbe + height + weight + age);
+    bmr = hbe + height + weight + age;
   }
   if (goal === 'bulk') {
-    bmr = Math.round(bmr + 600);
+    bmr = bmr + 600;
   } else if (goal === 'cut') {
-    bmr = Math.round(bmr - 600);
+    bmr = bmr - 600;
   }
-
+  if (actLevel === 'sedentary') {
+    bmr = Math.round(bmr * 1.2);
+  } else if (actLevel === 'lightly active') {
+    bmr = Math.round(bmr * 1.375);
+  } else if (actLevel === 'moderately active') {
+    bmr = Math.round(bmr * 1.55);
+  } else if (actLevel === 'very active') {
+    bmr = Math.round(bmr * 1.725);
+  }
   const sql = `
         update "users"
         set "dailyCalorie" = $1
