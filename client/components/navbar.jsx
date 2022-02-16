@@ -11,7 +11,7 @@ export default class Navbar extends React.Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#" style={{ color: '#007BFF' }}>Calculator<span className="sr-only">(current)</span></a>
+              <a className="nav-link" href="#calculator" style={{ color: '#007BFF' }}>Calculator</a>
             </li>
           </ul>
         </div>
