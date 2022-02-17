@@ -18,14 +18,13 @@ app.use(jsonMiddleware);
 app.put('/api/calorie/get-calorie', (req, res, next) => {
   let { age, weight, height, goal, level, gender, metric } = req.body;
   if ((!age) || (!weight) || (!height) || (!metric) || (!goal) || (!level) || (!gender)) {
-    throw new ClientError(400, 'age, weight, height, goal, activity level, isMetric and gender are required fields');
+    throw new ClientError(400, `age ${age}, weight ${weight}, height ${height}, goal ${goal}, level ${level}, metric ${metric} and gender ${gender} are required fields`);
   }
   age = parseInt(age);
   height = parseInt(height);
   weight = parseInt(weight);
-  metric = String(metric);
   let bmr = 0;
-  if (metric === 'false') {
+  if (metric === false) {
     height = height * 2.54;
     weight = weight / 2.2;
   }
