@@ -16,40 +16,44 @@ const db = new pg.Pool({
 app.use(jsonMiddleware);
 
 app.put('/api/calorie/get-calorie', (req, res, next) => {
-  let { age, weight, height, goal, actLevel, gender, isMetric } = req.body;
-  if ((!age) || (!weight) || (!height) || (!isMetric) || (!goal) || (!actLevel) || (!gender)) {
+  let { age, weight, height, goal, level, gender, metric } = req.body;
+  if ((!age) || (!weight) || (!height) || (!metric) || (!goal) || (!level) || (!gender)) {
     throw new ClientError(400, 'age, weight, height, goal, activity level, isMetric and gender are required fields');
   }
+  age = parseInt(age);
+  height = parseInt(height);
+  weight = parseInt(weight);
+  metric = String(metric);
   let bmr = 0;
-  if (isMetric === 'no') {
+  if (metric === 'false') {
     height = height * 2.54;
     weight = weight / 2.2;
   }
-  if (gender === 'male') {
+  if (gender === 'Male') {
     age = age * 6.8;
     weight = 13.7 * weight;
     height = 5 * height;
     const hbe = 655;
     bmr = hbe + height + weight + age;
-  } else if (gender === 'female') {
+  } else if (gender === 'Female') {
     age = age * 4.7;
     weight = 9.6 * weight;
     height = 1.8 * height;
     const hbe = 655;
     bmr = hbe + height + weight + age;
   }
-  if (goal === 'bulk') {
+  if (goal === 'Bulk') {
     bmr = bmr + 600;
-  } else if (goal === 'cut') {
+  } else if (goal === 'Cut') {
     bmr = bmr - 600;
   }
-  if (actLevel === 'sedentary') {
+  if (level === 'Sedentary') {
     bmr = Math.round(bmr * 1.2);
-  } else if (actLevel === 'lightly active') {
+  } else if (level === 'Lightly Active') {
     bmr = Math.round(bmr * 1.375);
-  } else if (actLevel === 'moderately active') {
+  } else if (level === 'Moderately Active') {
     bmr = Math.round(bmr * 1.55);
-  } else if (actLevel === 'very active') {
+  } else if (level === 'Very Active') {
     bmr = Math.round(bmr * 1.725);
   }
   const sql = `
