@@ -8,7 +8,7 @@ export default function Header(props) {
             <img src="./images/ox1.png" alt="test" style={{ width: '130px' }} />
           </div>
           <div className='col-8 col-lg-6'>
-            <h2 style={{ paddingTop: '3.6rem' }}>{props.header}</h2>
+            <h2 className='mt-5'>{props.header}</h2>
           </div>
         </div>
       </div>

@@ -30,21 +30,19 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
     weight = weight / 2.2;
   }
   if (gender === 'Male') {
-    age = age * 6.8;
-    weight = 13.7 * weight;
-    height = 5 * height;
-    const hbe = 655;
-    bmr = hbe + height + weight + age;
+    age = age * 6.755;
+    weight = 13.75 * weight;
+    height = 5.003 * height;
+    bmr = 66.5 + height + weight - age;
   } else if (gender === 'Female') {
-    age = age * 4.7;
-    weight = 9.6 * weight;
-    height = 1.8 * height;
-    const hbe = 655;
-    bmr = hbe + height + weight + age;
+    age = age * 4.676;
+    weight = 9.563 * weight;
+    height = 1.85 * height;
+    bmr = 655.1 + height + weight - age;
   }
-  if (goal === 'Bulk') {
+  if (goal === 'Bulking') {
     bmr = bmr + 600;
-  } else if (goal === 'Cut') {
+  } else if (goal === 'Cutting') {
     bmr = bmr - 600;
   }
   if (level === 'Sedentary') {

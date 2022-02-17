@@ -10,9 +10,9 @@ export default function Home(props) {
           <img src="./images/ox1.png" alt="test" style={{ width: '150px' }} />
       </div>
       <div className='col-6 col-lg-6'>
-            <h2 style={{ paddingTop: '1.4rem' }}>Welcome!</h2>
+            <h2 className="mt-4">Welcome!</h2>
             <h4>To Version: Priorty 1</h4>
-            <span className='pt-20'>Click a tab from the Navbar to Begin</span>
+            <span>Click a tab from the Navbar to Begin</span>
           </div>
         </div>
     </div>

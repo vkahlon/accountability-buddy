@@ -88,9 +88,9 @@ export default class Navbar extends React.Component {
                 <label htmlFor="goal">Goal</label>
                 <select onChange={this.handleChange} className="form-control" required id="goal" name="goal" defaultValue="">
                   <option value="" disabled>Select a Goal</option>
-                  <option>Cut</option>
-                  <option>Maintain</option>
-                  <option>Bulk</option>
+                  <option>Cutting</option>
+                  <option>Maintainence</option>
+                  <option>Bulking</option>
                 </select>
               </div>
               <div className="form-group">

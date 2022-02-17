@@ -11,7 +11,7 @@ export default class Navbar extends React.Component {
     let statement = null;
     const calories = this.state.stats.results.dailyCalorie;
     if (this.props.purpose === 'calculator') {
-      statement = `With your goal of ${this.state.stats.goal}, and your ${this.state.stats.level} activity level. You will be consuming ${calories} calories per day.`;
+      statement = `With your goal of ${this.state.stats.goal}, and your ${this.state.stats.level} lifestyle. You will be consuming ${calories} calories per day in order to achieve your goal.`;
     }
     return (
       <div className='container'>
