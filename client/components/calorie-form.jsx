@@ -67,7 +67,10 @@ export default class Navbar extends React.Component {
     }
     if (this.state.results !== '') {
       return (
-        < Stats stats={this.state}/>
+        <>
+        <Header header={'Your Stats'} />
+        < Stats stats={this.state} purpose={'calculator'}/>
+        </>
       );
     }
     return (
@@ -75,7 +78,7 @@ export default class Navbar extends React.Component {
       <Header header={'Calculate Calories'} />
       <div className='container '>
         <div className='row d-flex justify-content-center'>
-          <div className='col-10 d-flex justify-content-center col-lg-9' style={{ backgroundColor: '#F5FCFF' }}>
+            <div className='col-10 d-flex justify-content-center col-lg-9' style={{ backgroundColor: '#F5FCFF', borderRadius: '25px' } }>
           <form onSubmit={this.handleSubmit}>
               <div className="custom-control custom-switch  pt-4 pb-4">
                 <input onChange={this.handleChange} type="checkbox" className="custom-control-input" id="customSwitch1" name="metric" />
