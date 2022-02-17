@@ -1,4 +1,6 @@
 import React from 'react';
+import Stats from './stats';
+import Header from './header';
 export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,8 @@ export default class Navbar extends React.Component {
       gender: '',
       weight: '',
       height: '',
-      age: ''
+      age: '',
+      results: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,6 +38,7 @@ export default class Navbar extends React.Component {
     fetch('/api/calorie/get-calorie', req)
       .then(res => res.json())
       .then(result => {
+        this.setState({ results: result });
       });
   }
 
@@ -61,7 +65,14 @@ export default class Navbar extends React.Component {
         <small id="HeightHelp" className="form-text text-muted">Current Unit: Metric-Cenimeters</small>
       </>;
     }
+    if (this.state.results !== '') {
+      return (
+        < Stats stats={this.state}/>
+      );
+    }
     return (
+      <>
+      <Header header={'Calculate Calories'} />
       <div className='container '>
         <div className='row d-flex justify-content-center'>
           <div className='col-10 d-flex justify-content-center col-lg-9' style={{ backgroundColor: '#F5FCFF' }}>
@@ -116,6 +127,7 @@ export default class Navbar extends React.Component {
           </div>
         </div>
       </div>
+      </>
     );
   }
 }
