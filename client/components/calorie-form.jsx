@@ -3,11 +3,45 @@ export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      unit: 'freedom'
+      metric: false
     };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({ metric: (!this.state.metric) });
   }
 
   render() {
+    const whichUnit = this.state.metric;
+    let scale;
+    if (whichUnit === false) {
+      scale = <>
+              <div className="form-group">
+                <label htmlFor="InputWeight">Weight</label>
+                <input type="number" className="form-control" id="inputWeight" aria-describedby="weightHelp" placeholder="Enter Weight in lbs"/>
+                <small id="weightHelp" className="form-text text-muted">Current Unit: Imperial</small>
+              </div>
+              <div className="form-group">
+                <label htmlFor="InputHeight">Height</label>
+                <input type="number" className="form-control" id="inputHeight" aria-describedby="HeightHelp" placeholder="Enter Height in inches"/>
+                <small id="HeightHelp" className="form-text text-muted">Current Unit: Imperial</small>
+              </div>
+      </>;
+    } else {
+      scale = <>
+        <div className="form-group">
+          <label htmlFor="InputWeight">Weight</label>
+          <input type="number" className="form-control" id="inputWeight" aria-describedby="weightHelp" placeholder="Enter Weight in kg" />
+          <small id="weightHelp" className="form-text text-muted">Current Unit: Metric</small>
+        </div>
+        <div className="form-group">
+          <label htmlFor="InputHeight">Height</label>
+          <input type="number" className="form-control" id="inputHeight" aria-describedby="HeightHelp" placeholder="Enter Height in cm" />
+          <small id="HeightHelp" className="form-text text-muted">Current Unit: Metric</small>
+        </div>
+      </>;
+    }
     return (
       <div className='container '>
         <div className='row d-flex justify-content-center'>
@@ -15,7 +49,7 @@ export default class Navbar extends React.Component {
           <form onSubmit={this.handleSubmit}>
               <div className="custom-control custom-switch  pt-4 pb-4">
                 <input type="checkbox" className="custom-control-input" id="customSwitch1"/>
-                  <label className="custom-control-label" htmlFor="customSwitch1">Enable Imperial Units</label>
+                <label onClick={this.handleClick} className="custom-control-label" htmlFor="customSwitch1">Enable Metric Units</label>
               </div>
               <div className="form-group">
                 <label htmlFor="exampleFormControlSelect1">Goal</label>
@@ -44,16 +78,7 @@ export default class Navbar extends React.Component {
                   <option>Female</option>
                 </select>
               </div>
-              <div className="form-group">
-                <label htmlFor="InputWeight">Weight</label>
-                <input type="number" className="form-control" id="inputWeight" aria-describedby="weightHelp" placeholder="Enter Weight"/>
-                <small id="weightHelp" className="form-text text-muted">Currently Selected Metric</small>
-              </div>
-              <div className="form-group">
-                <label htmlFor="InputHeight">Height</label>
-                <input type="number" className="form-control" id="inputHeight" aria-describedby="HeightHelp" placeholder="Enter Height"/>
-                <small id="HeightHelp" className="form-text text-muted">Currently Selected Metric</small>
-              </div>
+             {scale}
               <div className="form-group">
                 <label htmlFor="InputAge">Age</label>
                 <input type="number" className="form-control" id="inputAge" aria-describedby="AgeHelp" placeholder="Enter Age"/>
