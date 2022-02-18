@@ -15,6 +15,31 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
+app.post('/api/calorie/get-calorie', (req, res, next) => {
+  const { name, value } = req.body;
+  if (!name || !value) {
+    throw new ClientError(400, `Condition 1: name: ${name}, value: ${value} are required fields`);
+  }
+  const sql = `
+        insert into "meals"
+        set "dailyCalorie" = $1
+        where "userId" = 1
+        returning *
+      `;
+  const params = [name, value];
+  db.query(sql, params)
+    .then(result => {
+      const [newMeal] = result.rows;
+      if (!newMeal) {
+        throw new ClientError(404, 'cannot find user with userId of 1');
+      } else {
+        res.json(newMeal);
+      }
+    })
+    .catch(err => next(err));
+
+});
+
 app.put('/api/calorie/get-calorie', (req, res, next) => {
   let { age, weight, height, goal, level, gender, metric } = req.body;
   if (!age || !weight || !height || !goal || !level || !gender || typeof metric === 'undefined') {
