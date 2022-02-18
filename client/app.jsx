@@ -3,6 +3,7 @@ import Home from './pages/home';
 import Calculator from './pages/calculator';
 import NotFound from './pages/not-found';
 import parseRoute from './library/parse-route';
+import Meals from './pages/meals';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,9 @@ export default class App extends React.Component {
     }
     if (route.path === 'calculator') {
       return <Calculator />;
+    }
+    if (route.path === 'meals') {
+      return <Meals />;
     }
     return <NotFound />;
   }
