@@ -15,6 +15,32 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
+app.post('/api/calorie/add-meal', (req, res, next) => {
+  const { meal, calories } = req.body;
+  if (!meal || !calories) {
+    throw new ClientError(400, `Condition 1: name: ${meal}, value: ${calories} are required fields`);
+  }
+  if ((meal.length > 20) || (calories.toString().length > 5)) {
+    throw new ClientError(400, `Meal Name must be under 20 characters. Value must be under 6 digits. Your input ${meal.length} characters. Your input ${calories.toString().length} characters.`);
+  }
+  const sql = `
+        insert into "meals" ("mealName", "calories")
+        values ($1, $2)
+        returning *
+      `;
+  const params = [meal, calories];
+  db.query(sql, params)
+    .then(result => {
+      const [newMeal] = result.rows;
+      if (!newMeal) {
+        throw new ClientError(404, 'cannot find user with userId of 1');
+      } else {
+        res.json(newMeal);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.put('/api/calorie/get-calorie', (req, res, next) => {
   let { age, weight, height, goal, level, gender, metric } = req.body;
   if (!age || !weight || !height || !goal || !level || !gender || typeof metric === 'undefined') {
