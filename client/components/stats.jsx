@@ -3,15 +3,37 @@ export default class Navbar extends React.Component {
 
   render() {
     let statement = null;
-    const calories = this.props.stats.results.dailyCalorie;
-    if (this.props.purpose === 'calculator') {
-      statement = `With your goal of ${this.props.stats.goal}, and your ${this.props.stats.level} lifestyle. You will be consuming ${calories} calories per day in order to achieve your goal.`;
+    const dailyCalories = this.props.stats.results.dailyCalorie;
+    const itemCalories = this.props.stats.results.calories;
+    const mealName = this.props.stats.results.mealName;
+    if (this.props.purpose === 'meal') {
+      return (
+        <div className='container'>
+          <div className='row d-flex justify-content-center mt-3'>
+            <div className='col-8 d-flex justify-content-center col-lg-4 pt-2 pb-2' style={{ backgroundColor: '#FFF3CD', borderRadius: '1px', borderBottom: '1px solid' }}>
+              <h2>{mealName}</h2>
+            </div>
+          </div>
+          <div className='row d-flex justify-content-center'>
+            <div className='col-8 d-flex justify-content-center col-lg-4 pt-2 pb-2' style={{ backgroundColor: '#FFF3CD', borderRadius: '1px', borderTop: '1px solid' }}>
+              <h3>{itemCalories} Calories</h3>
+            </div>
+          </div>
+          <div className='row d-flex justify-content-center mt-4'>
+            <div className='col-8 d-flex justify-content-center col-lg-4'>
+              <a href="#meals">Add Another Meal?</a>
+            </div>
+          </div>
+        </div>
+      );
     }
-    return (
+    if (this.props.purpose === 'calculator') {
+      statement = `With your goal of ${this.props.stats.goal}, and your ${this.props.stats.level} lifestyle. You will be consuming ${dailyCalories} calories per day in order to achieve your goal.`;
+      return (
       <div className='container'>
         <div className='row d-flex justify-content-center mt-3'>
           <div className='col-10 d-flex justify-content-center col-lg-5 pt-2 pb-2' style={{ backgroundColor: '#FFF3CD', borderRadius: '25px' }}>
-            <h2>{calories} Calories</h2>
+              <h2>{dailyCalories} Calories</h2>
           </div>
         </div>
         <div className='row d-flex justify-content-center mt-4'>
@@ -20,6 +42,7 @@ export default class Navbar extends React.Component {
           </div>
         </div>
       </div>
-    );
+      );
+    }
   }
 }

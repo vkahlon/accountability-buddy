@@ -15,18 +15,20 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
-app.post('/api/calorie/get-calorie', (req, res, next) => {
-  const { name, value } = req.body;
-  if (!name || !value) {
-    throw new ClientError(400, `Condition 1: name: ${name}, value: ${value} are required fields`);
+app.post('/api/calorie/add-meal', (req, res, next) => {
+  const { meal, calories } = req.body;
+  if (!meal || !calories) {
+    throw new ClientError(400, `Condition 1: name: ${meal}, value: ${calories} are required fields`);
+  }
+  if ((meal.length > 20) || (calories.toString().length > 5)) {
+    throw new ClientError(400, `Meal Name must be under 20 characters. Value must be under 6 digits. Your input ${meal.length} characters. Your input ${calories.toString().length} characters.`);
   }
   const sql = `
-        insert into "meals"
-        set "dailyCalorie" = $1
-        where "userId" = 1
+        insert into "meals" ("mealName", "calories")
+        values ($1, $2)
         returning *
       `;
-  const params = [name, value];
+  const params = [meal, calories];
   db.query(sql, params)
     .then(result => {
       const [newMeal] = result.rows;
@@ -37,7 +39,6 @@ app.post('/api/calorie/get-calorie', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-
 });
 
 app.put('/api/calorie/get-calorie', (req, res, next) => {

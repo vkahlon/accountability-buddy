@@ -5,7 +5,7 @@ export default function Calculator(props) {
   return (
     <>
       <Navbar />
-      <IForm />
+      <IForm status={''} />
     </>
   );
 }
