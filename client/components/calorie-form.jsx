@@ -1,7 +1,7 @@
 import React from 'react';
 import Stats from './stats';
 import Header from './header';
-export default class Navbar extends React.Component {
+export default class CalorieForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,11 +1,11 @@
 import React from 'react';
 import Navbar from '../components/navbar';
-import IForm from '../components/item-form';
-export default function Calculator(props) {
+import ItemForm from '../components/item-form';
+export default function Meals(props) {
   return (
     <>
       <Navbar />
-      <IForm status={''} />
+      <ItemForm status={''} />
     </>
   );
 }

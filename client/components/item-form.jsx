@@ -1,7 +1,7 @@
 import React from 'react';
 import Stats from './stats';
 import Header from './header';
-export default class IForm extends React.Component {
+export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,11 +47,14 @@ export default class IForm extends React.Component {
     const calorieLength = this.state.calories.length;
     let warningCal = null;
     let warningMeal = null;
-    if (mealLength === 20) {
-      warningMeal = <p className='text-danger'>Reched Character Limit</p>;
+    if (mealLength > 19) {
+      warningMeal = <p className='text-danger'>Reached Character Limit</p>;
     }
-    if (calorieLength > 3) {
-      warningCal = <p className='text-danger'>Reached Digit Limit</p>;
+    if (calorieLength === 4) {
+      warningCal = <p className='text-warning'>Reached Digit Limit</p>;
+    }
+    if (calorieLength > 4) {
+      warningCal = <p className='text-danger'>Invalid Entry</p>;
     }
     return (
       <>

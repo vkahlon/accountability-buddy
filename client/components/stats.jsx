@@ -20,7 +20,7 @@ export default class Stats extends React.Component {
           </div>
           <div className='row d-flex justify-content-center mt-4'>
             <div className='col-8 d-flex justify-content-center col-lg-4'>
-              <a href="#Home">Return Home</a>
+              <a href="#">Return Home</a>
             </div>
           </div>
         </div>
