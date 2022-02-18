@@ -1,17 +1,11 @@
 import React from 'react';
 export default class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stats: this.props.stats
-    };
-  }
 
   render() {
     let statement = null;
-    const calories = this.state.stats.results.dailyCalorie;
+    const calories = this.props.stats.results.dailyCalorie;
     if (this.props.purpose === 'calculator') {
-      statement = `With your goal of ${this.state.stats.goal}, and your ${this.state.stats.level} lifestyle. You will be consuming ${calories} calories per day in order to achieve your goal.`;
+      statement = `With your goal of ${this.props.stats.goal}, and your ${this.props.stats.level} lifestyle. You will be consuming ${calories} calories per day in order to achieve your goal.`;
     }
     return (
       <div className='container'>
