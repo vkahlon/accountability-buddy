@@ -1,6 +1,5 @@
 import React from 'react';
-export default class Navbar extends React.Component {
-
+export default class Stats extends React.Component {
   render() {
     let statement = null;
     const dailyCalories = this.props.stats.results.dailyCalorie;
@@ -21,7 +20,7 @@ export default class Navbar extends React.Component {
           </div>
           <div className='row d-flex justify-content-center mt-4'>
             <div className='col-8 d-flex justify-content-center col-lg-4'>
-              <a href="#meals">Add Another Meal?</a>
+              <a href="#Home">Return Home</a>
             </div>
           </div>
         </div>
@@ -39,6 +38,11 @@ export default class Navbar extends React.Component {
         <div className='row d-flex justify-content-center mt-4'>
           <div className='col-10 d-flex justify-content-center col-lg-5'>
             <p>{statement} </p>
+          </div>
+        </div>
+        <div className='row d-flex justify-content-center mt-4'>
+          <div className='col-8 d-flex justify-content-center col-lg-4'>
+            <a href="#">Return Home</a>
           </div>
         </div>
       </div>

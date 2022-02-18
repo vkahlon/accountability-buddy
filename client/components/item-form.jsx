@@ -50,7 +50,7 @@ export default class IForm extends React.Component {
     if (mealLength === 20) {
       warningMeal = <p className='text-danger'>Reched Character Limit</p>;
     }
-    if (calorieLength > 5) {
+    if (calorieLength > 3) {
       warningCal = <p className='text-danger'>Reached Digit Limit</p>;
     }
     return (
