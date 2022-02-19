@@ -4,13 +4,14 @@ export default class Stats extends React.Component {
     let statement = null;
     const dailyCalories = this.props.stats.results.dailyCalorie;
     const itemCalories = this.props.stats.results.calories;
-    const mealName = this.props.stats.results.mealName;
-    if (this.props.purpose === 'meal') {
+    // const mealName = this.props.stats.results.mealName;
+    const exerciseName = this.props.stats.results.exerciseName;
+    if (this.props.purpose === 'item') {
       return (
         <div className='container'>
           <div className='row d-flex justify-content-center mt-3'>
             <div className='col-8 d-flex justify-content-center col-lg-4 pt-2 pb-2' style={{ backgroundColor: '#FFF3CD', borderRadius: '1px', borderBottom: '1px solid' }}>
-              <h2>{mealName}</h2>
+              <h2>{exerciseName}</h2>
             </div>
           </div>
           <div className='row d-flex justify-content-center'>

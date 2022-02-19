@@ -15,20 +15,20 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
-app.post('/api/calorie/add-meal', (req, res, next) => {
-  const { meal, calories } = req.body;
-  if (!meal || !calories) {
-    throw new ClientError(400, `Condition 1: name: ${meal}, value: ${calories} are required fields`);
+app.post('/api/calorie/add-Meal', (req, res, next) => {
+  const { item, calories } = req.body;
+  if (!item || !calories) {
+    throw new ClientError(400, `Condition 1: name: ${item}, value: ${calories} are required fields`);
   }
-  if ((meal.length > 20) || (calories.toString().length > 5)) {
-    throw new ClientError(400, `Meal Name must be under 20 characters. Value must be under 6 digits. Your input ${meal.length} characters. Your input ${calories.toString().length} characters.`);
+  if ((item.length > 20) || (calories.toString().length > 5)) {
+    throw new ClientError(400, `Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
   }
   const sql = `
         insert into "meals" ("mealName", "calories")
         values ($1, $2)
         returning *
       `;
-  const params = [meal, calories];
+  const params = [item, calories];
   db.query(sql, params)
     .then(result => {
       const [newMeal] = result.rows;
@@ -36,6 +36,31 @@ app.post('/api/calorie/add-meal', (req, res, next) => {
         throw new ClientError(404, 'cannot find user with userId of 1');
       } else {
         res.json(newMeal);
+      }
+    })
+    .catch(err => next(err));
+});
+app.post('/api/calorie/add-Exercise', (req, res, next) => {
+  const { item, calories } = req.body;
+  if (!item || !calories) {
+    throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
+  }
+  if ((item.length > 20) || (calories.toString().length > 5)) {
+    throw new ClientError(400, `Exercise name must be under 20 characters. Value must be under 6 digits. Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
+  }
+  const sql = `
+        insert into "exercises" ("exerciseName", "calories")
+        values ($1, $2)
+        returning *
+      `;
+  const params = [item, calories];
+  db.query(sql, params)
+    .then(result => {
+      const [newExercise] = result.rows;
+      if (!newExercise) {
+        throw new ClientError(404, 'cannot find user with userId of 1');
+      } else {
+        res.json(newExercise);
       }
     })
     .catch(err => next(err));
