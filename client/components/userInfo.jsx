@@ -10,11 +10,31 @@ export default class UserInfo extends React.Component {
   }
 
   componentDidMount() {
-    /* your code here */
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch('api/meals')
       .then(response => response.json())
-      .then(data => this.setState({ users: data, isLoading: false }));
+      .then(data => {
+        const mealData = data;
+        return mealData;
+      });
+
+    fetch('api/exercises')
+      .then(response => response.json())
+      .then(data => {
+        const exerciseData = data;
+        return exerciseData;
+      });
+
+    fetch('api/user')
+      .then(response => response.json())
+      .then(data => {
+        const calorie = data;
+        return calorie;
+      });
   }
+
+  // fetch('https://jsonplaceholder.typicode.com/users')
+  //   .then(response => response.json())
+  //   .then(data => this.setState({ users: data, isLoading: false }));
 
   render() {
     return this.state.isLoading

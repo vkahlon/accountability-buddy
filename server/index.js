@@ -37,6 +37,17 @@ app.get('/api/exercises', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+app.get('/api/user', (req, res, next) => {
+  const sql = `
+    select "dailyCalorie"
+      from "users"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
 // Clean the Junk Data
 // app.delete('/api/exercises', (req, res, next) => {
 //   const sql = `
