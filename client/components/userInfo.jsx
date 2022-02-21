@@ -38,23 +38,29 @@ export default class UserInfo extends React.Component {
   }
 
   componentDidMount() {
+    const allItems = [];
+    const mealList = [];
+    const exerciseList = [];
     fetch('api/meals')
       .then(response => response.json())
       .then(data => {
         const mealData = data;
-        // console.log(mealData);
         for (let i = 0; i < mealData.length; i++) {
-          // const idString = (`meal-${mealData[i].mealId}`);
-          // console.log(idString);
+          const idString = (`meal-${mealData[i].mealId}`);
+          mealList.push(idString);
+          allItems.push({ [idString]: { id: idString, content: mealData[i].mealName, calories: mealData[i].calories } });
         }
-        return mealData;
+        return allItems;
       });
-
     fetch('api/exercises')
       .then(response => response.json())
       .then(data => {
         const exerciseData = data;
-        // console.log(exerciseData);
+        for (let i = 0; i < exerciseData.length; i++) {
+          const idString = (`exercise-${exerciseData[i].exerciseId}`);
+          exerciseList.push(idString);
+          allItems.push({ [idString]: { id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories } });
+        }
         return exerciseData;
       });
 
@@ -62,10 +68,33 @@ export default class UserInfo extends React.Component {
       .then(response => response.json())
       .then(data => {
         const calorie = data;
-        this.setState({ data: { dailyCalorie: calorie[0].dailyCalorie } });
-        return calorie;
+        return this.setState({
+          data: {
+            tasks: { allItems },
+            columns: {
+              'column-1': {
+                id: 'column-1',
+                title: 'Exercises',
+                taskIds: exerciseList
+              },
+              'column-2': {
+                id: 'column-2',
+                title: 'Meals',
+                taskIds: mealList
+              },
+              'column-3': {
+                id: 'column-3',
+                title: 'Calculate',
+                taskIds: []
+              }
+            },
+            columnOrder: ['column-1', 'column-2', 'column-3'],
+            dailyCalorie: calorie[0].dailyCalorie
+          },
+          isLoading: false
+        }
+        );
       });
-    this.setState({ isLoading: false });
   }
 
   render() {
