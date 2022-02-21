@@ -15,6 +15,50 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
+app.get('/api/meals', (req, res, next) => {
+  const sql = `
+    select *
+      from "meals"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+app.get('/api/exercises', (req, res, next) => {
+  const sql = `
+    select *
+      from "exercises"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+// Clean the Junk Data
+// app.delete('/api/exercises', (req, res, next) => {
+//   const sql = `
+//     delete from "exercises"
+//   `;
+//   db.query(sql)
+//     .then(result => {
+//       res.json(result.rows);
+//     })
+//     .catch(err => next(err));
+// });
+// app.delete('/api/meals', (req, res, next) => {
+//   const sql = `
+//     delete from "meals"
+//   `;
+//   db.query(sql)
+//     .then(result => {
+//       res.json(result.rows);
+//     })
+//     .catch(err => next(err));
+// });
+
 app.post('/api/calorie/add-Meal', (req, res, next) => {
   const { item, calories } = req.body;
   if (!item || !calories) {
