@@ -5,9 +5,9 @@ export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: this.props.status,
+      results: '',
       calories: '',
-      meal: ''
+      item: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,6 +19,7 @@ export default class ItemForm extends React.Component {
   }
 
   handleSubmit(event) {
+    const action = this.props.purpose;
     event.preventDefault();
     const req = {
       method: 'POST',
@@ -27,7 +28,7 @@ export default class ItemForm extends React.Component {
       },
       body: JSON.stringify(this.state)
     };
-    fetch('/api/calorie/add-meal', req)
+    fetch(`/api/calorie/add-${action}`, req)
       .then(res => res.json())
       .then(result => {
         this.setState({ results: result });
@@ -38,16 +39,16 @@ export default class ItemForm extends React.Component {
     if (this.state.results !== '') {
       return (
         <>
-          <Header header={'Meal Added'} />
-          < Stats stats={this.state} purpose={'meal'} />
+          <Header header={`${this.props.purpose} Added`} />
+          < Stats stats={this.state} purpose={'item'} />
         </>
       );
     }
-    const mealLength = this.state.meal.length;
+    const itemLength = this.state.item.length;
     const calorieLength = this.state.calories.length;
     let warningCal = null;
     let warningMeal = null;
-    if (mealLength > 19) {
+    if (itemLength > 19) {
       warningMeal = <p className='text-danger'>Reached Character Limit</p>;
     }
     if (calorieLength === 4) {
@@ -58,20 +59,20 @@ export default class ItemForm extends React.Component {
     }
     return (
       <>
-      <Header header={'Add a Meal'}/>
+      <Header header={this.props.status}/>
         <div className='container '>
           <div className='row d-flex justify-content-center'>
             <div className='col-10 d-flex justify-content-center col-lg-8' style={{ backgroundColor: '#F5FCFF', borderRadius: '25px' }}>
 
         <form onSubmit={this.handleSubmit}>
           <div className="form-group mt-3">
-            <label htmlFor="name">Meal Name</label>
-            <input onChange={this.handleChange} type="text" className="form-control" maxLength={20} required id="meal" name="meal" aria-describedby="AgeHelp" placeholder="Enter Meal Name" />
+            <label htmlFor="name">{this.props.purpose} Name</label>
+                  <input onChange={this.handleChange} type="text" className="form-control" maxLength={20} required id="item" name="item" aria-describedby="AgeHelp" placeholder="Enter Name" />
           </div>
           <div>{warningMeal}</div>
           <div className="form-group">
             <label htmlFor="calories">Total Calories</label>
-                  <input onChange={this.handleChange} type="number" className="form-control" max={9999} required id="calories" name="calories" aria-describedby="AgeHelp" placeholder="Enter Meal Calories" />
+                  <input onChange={this.handleChange} type="number" className="form-control" max={9999} required id="calories" name="calories" aria-describedby="AgeHelp" placeholder="Enter Calories" />
           </div>
           <div>{warningCal}</div>
           <div className="form-group d-flex justify-content-center mr-3 mt-1">

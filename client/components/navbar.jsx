@@ -16,6 +16,9 @@ export default class Navbar extends React.Component {
             <li className="nav-item active">
               <a className="nav-link" href="#meals" style={{ color: '#007BFF' }}>Meals</a>
             </li>
+            <li className="nav-item active">
+              <a className="nav-link" href="#exercises" style={{ color: '#007BFF' }}>Exercises</a>
+            </li>
           </ul>
         </div>
       </nav>
