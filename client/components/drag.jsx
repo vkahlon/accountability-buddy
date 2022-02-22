@@ -44,6 +44,7 @@ export default class Drag extends React.Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
+        <h1>Test</h1>
         {this.state.columnOrder.map(columnId => {
           const column = this.state.columns[columnId];
           const tasks = column.taskIds;
