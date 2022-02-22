@@ -48,11 +48,10 @@ app.get('/api/user', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-// Clean the Junk Data
 // app.delete('/api/exercises', (req, res, next) => {
 //   const sql = `
-//     delete from "exercises"
-//   `;
+//      delete from "exercises"
+//    `;
 //   db.query(sql)
 //     .then(result => {
 //       res.json(result.rows);
@@ -61,8 +60,8 @@ app.get('/api/user', (req, res, next) => {
 // });
 // app.delete('/api/meals', (req, res, next) => {
 //   const sql = `
-//     delete from "meals"
-//   `;
+//      delete from "meals"
+//    `;
 //   db.query(sql)
 //     .then(result => {
 //       res.json(result.rows);
