@@ -48,7 +48,7 @@ export default class UserInfo extends React.Component {
         for (let i = 0; i < mealData.length; i++) {
           const idString = (`meal-${mealData[i].mealId}`);
           mealList.push(idString);
-          allItems.push({ [idString]: { id: idString, content: mealData[i].mealName, calories: mealData[i].calories } });
+          allItems.push({ id: idString, content: mealData[i].mealName, calories: mealData[i].calories });
         }
         return allItems;
       });
@@ -59,9 +59,9 @@ export default class UserInfo extends React.Component {
         for (let i = 0; i < exerciseData.length; i++) {
           const idString = (`exercise-${exerciseData[i].exerciseId}`);
           exerciseList.push(idString);
-          allItems.push({ [idString]: { id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories } });
+          allItems.push({ id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories });
         }
-        return exerciseData;
+        return allItems;
       });
 
     fetch('api/user')
@@ -70,7 +70,7 @@ export default class UserInfo extends React.Component {
         const calorie = data;
         return this.setState({
           data: {
-            tasks: { allItems },
+            tasks: allItems,
             columns: {
               'column-1': {
                 id: 'column-1',
