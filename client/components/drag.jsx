@@ -5,13 +5,12 @@ import { DragDropContext } from 'react-beautiful-dnd';
 export default class Drag extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { intialData: this.props.codex };
+    this.state = this.props.codex;
     this.onDragEnd = this.onDragEnd.bind(this);
-
   }
 
   onDragEnd(result) {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
     if (!destination) {
       return;
     }
@@ -22,15 +21,14 @@ export default class Drag extends React.Component {
     ) {
       return;
     }
-    const column = this.state.intialData.columns[source.droppableId];
-
-    const newTaskIds = Array.from(column.taskIds);
-    newTaskIds.splice(source.index, 1);
-    newTaskIds.splice(destination.index, 0, draggableId);
+    const column = this.state.columns[source.droppableId];
+    const newResult = Array.from(column.taskIds);
+    const [removed] = newResult.splice(result.source.index, 1);
+    newResult.splice(result.destination.index, 0, removed);
 
     const newColumn = {
       ...column,
-      taskIds: newTaskIds
+      taskIds: newResult
     };
 
     const newState = {
@@ -40,14 +38,14 @@ export default class Drag extends React.Component {
         [newColumn.id]: newColumn
       }
     };
-    this.setState(newState.intialData);
+    this.setState(newState);
   }
 
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        {this.state.intialData.columnOrder.map(columnId => {
-          const column = this.state.intialData.columns[columnId];
+        {this.state.columnOrder.map(columnId => {
+          const column = this.state.columns[columnId];
           const tasks = column.taskIds;
 
           return <Column key={column.id} column={column} tasks={tasks} />;

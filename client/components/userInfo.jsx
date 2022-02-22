@@ -39,15 +39,24 @@ export default class UserInfo extends React.Component {
         const calorie = data;
         return this.setState({
           data: {
-            tasks: allItems,
             columns: {
               'column-1': {
                 id: 'column-1',
-                title: 'Everything...',
-                taskIds: allItems
+                title: 'Exercises',
+                taskIds: exerciseList
+              },
+              'column-2': {
+                id: 'column-2',
+                title: 'Meals',
+                taskIds: mealList
+              },
+              'column-3': {
+                id: 'column-3',
+                title: 'Today',
+                taskIds: []
               }
             },
-            columnOrder: ['column-1'],
+            columnOrder: ['column-1', 'column-2', 'column-3'],
             dailyCalorie: calorie[0].dailyCalorie
           },
           isLoading: false
