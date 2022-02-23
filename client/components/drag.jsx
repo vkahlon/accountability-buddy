@@ -63,6 +63,12 @@ export default class Drag extends React.Component {
         [newFinish.id]: newFinish
       }
     };
+    if (destination.droppableId === 'column-3') {
+      const currentCalorie = newState.dailyCalorie;
+      const itemCalorie = indexThatLeft[0].calories;
+      const newDailyCalorie = currentCalorie + itemCalorie;
+      newState.dailyCalorie = newDailyCalorie;
+    }
     return this.setState(newState);
   }
 
@@ -74,7 +80,6 @@ export default class Drag extends React.Component {
         {this.state.columnOrder.map(columnId => {
           const column = this.state.columns[columnId];
           const tasks = column.taskIds;
-
           return <Column key={column.id} column={column} tasks={tasks} />;
         })}
         </div>

@@ -10,7 +10,7 @@ const Container = styled.div`
   width: 170px
 `;
 const Title = styled.h4`
-  padding: 8px;
+  margin-top: 6px;
   text-align: center
 `;
 const TaskList = styled.div`

@@ -57,7 +57,8 @@ export default class UserInfo extends React.Component {
               }
             },
             columnOrder: ['column-1', 'column-2', 'column-3'],
-            dailyCalorie: calorie[0].dailyCalorie
+            dailyCalorie: calorie[0].dailyCalorie,
+            reserveCalorie: calorie[0].dailyCalorie
           },
           isLoading: false
         }
