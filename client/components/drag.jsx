@@ -75,9 +75,15 @@ export default class Drag extends React.Component {
   }
 
   render() {
+    let statement = 'Calories Remaining';
+    let calorieLimit = this.state.dailyCalorie;
+    if (this.state.dailyCalorie < 0) {
+      statement = 'Calories over your limit!';
+      calorieLimit = calorieLimit * -1;
+    }
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <h3 style={{ textAlign: 'center' }}>{this.state.dailyCalorie} Calories Remaining</h3>
+        <h3 style={{ textAlign: 'center' }}>{calorieLimit} {statement}</h3>
         <div className='row d-flex justify-content-center'>
         {this.state.columnOrder.map(columnId => {
           const column = this.state.columns[columnId];

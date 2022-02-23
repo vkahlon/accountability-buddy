@@ -3,16 +3,6 @@ import styled from 'styled-components';
 import Task from './task';
 import { Droppable } from 'react-beautiful-dnd';
 
-const Container = styled.div`
-  margin: 8px;
-  border: 1px solid black;
-  border-radius: 2px;
-  width: 170px
-`;
-const Title = styled.h4`
-  margin-top: 6px;
-  text-align: center
-`;
 const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.2s ease;
@@ -23,8 +13,8 @@ const TaskList = styled.div`
 export default class Column extends React.Component {
   render() {
     return (
-      <Container>
-        <Title>{this.props.column.title}</Title>
+      <div className='m-3' style={{ margin: '8px', border: '1px solid black', borderRadius: '2px', width: '140px' }}>
+        <h4 className='mt-2 text-center'>{this.props.column.title}</h4>
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
             <TaskList ref={provided.innerRef}
@@ -38,7 +28,7 @@ export default class Column extends React.Component {
             </TaskList>
           )}
         </Droppable>
-      </Container>
+      </div>
     );
   }
 }
