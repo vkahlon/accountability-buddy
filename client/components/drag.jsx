@@ -76,11 +76,12 @@ export default class Drag extends React.Component {
   render() {
     const exerciseListLength = this.state.columns['column-1'].taskIds.length;
     const mealListLength = this.state.columns['column-2'].taskIds.length;
+    const calculatorLength = this.state.columns['column-3'].taskIds.length;
     let statement = 'Calories Remaining';
     let warning = null;
     let calorieLimit = this.state.dailyCalorie;
     let calorieCalc = 'text-center';
-    if (exerciseListLength === 0 && mealListLength === 0) {
+    if (exerciseListLength === 0 && mealListLength === 0 && calculatorLength === 0) {
       warning = <p className='text-center font-italic mt-4'>You have No <a href="#meals">Meals</a> or <a href="#exercises">Exercises</a> Added</p>;
     }
     if (this.state.dailyCalorie < 0) {
