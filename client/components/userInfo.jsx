@@ -7,28 +7,18 @@ export default class UserInfo extends React.Component {
   }
 
   componentDidMount() {
-    const mealList = [];
-    const exerciseList = [];
+    let mealList = null;
+    let exerciseList = null;
     fetch('api/meals')
       .then(response => response.json())
       .then(data => {
-        const mealData = data;
-        for (let i = 0; i < mealData.length; i++) {
-          const idString = (`meal-${mealData[i].mealId}`);
-          mealList.push({ id: idString, content: mealData[i].mealName, calories: -mealData[i].calories, icon: './images/fork.png' });
-        }
-        return mealList;
+        mealList = data;
       })
       .then(meal => {
         fetch('api/exercises')
           .then(response => response.json())
           .then(data => {
-            const exerciseData = data;
-            for (let i = 0; i < exerciseData.length; i++) {
-              const idString = (`exercise-${exerciseData[i].exerciseId}`);
-              exerciseList.push({ id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: './images/dumbell.png' });
-            }
-            return exerciseList;
+            exerciseList = data;
           })
           .then(exercise => {
             fetch('api/user')
@@ -50,7 +40,7 @@ export default class UserInfo extends React.Component {
                       },
                       'column-3': {
                         id: 'column-3',
-                        title: 'Today',
+                        title: 'Calculate',
                         healthItemIds: []
                       }
                     },
