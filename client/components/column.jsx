@@ -4,9 +4,9 @@ import Task from './task';
 import { Droppable } from 'react-beautiful-dnd';
 
 const TaskList = styled.div`
-  padding: 8px;
+  padding: 7px;
   transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+  background-color: ${props => (props.isDraggingOver ? 'lightgreen' : 'white')};
   min-height: 100px;
 `;
 
