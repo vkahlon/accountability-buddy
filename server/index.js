@@ -22,7 +22,13 @@ app.get('/api/meals', (req, res, next) => {
   `;
   db.query(sql)
     .then(result => {
-      res.json(result.rows);
+      const mealList = [];
+      const mealData = result.rows;
+      for (let i = 0; i < mealData.length; i++) {
+        const idString = (`meal-${mealData[i].mealId}`);
+        mealList.push({ id: idString, content: mealData[i].mealName, calories: -mealData[i].calories, icon: './images/fork.png' });
+      }
+      res.json(mealList);
     })
     .catch(err => next(err));
 });
@@ -33,7 +39,13 @@ app.get('/api/exercises', (req, res, next) => {
   `;
   db.query(sql)
     .then(result => {
-      res.json(result.rows);
+      const exerciseList = [];
+      const exerciseData = result.rows;
+      for (let i = 0; i < exerciseData.length; i++) {
+        const idString = (`exercise-${exerciseData[i].exerciseId}`);
+        exerciseList.push({ id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: './images/dumbell.png' });
+      }
+      res.json(exerciseList);
     })
     .catch(err => next(err));
 });

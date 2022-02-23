@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Task from './task';
+import Item from './item';
 import { Droppable } from 'react-beautiful-dnd';
 
-const TaskList = styled.div`
+const ItemList = styled.div`
   padding: 7px;
   transition: background-color 0.2s ease;
   background-color: ${props => (props.isDraggingOver ? 'lightgreen' : 'white')};
@@ -17,15 +17,15 @@ export default class Column extends React.Component {
         <h4 className='mt-2 text-center' style={{ color: 'rgb(24, 49, 83)' }}>{this.props.column.title}</h4>
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
-            <TaskList ref={provided.innerRef}
+            <ItemList ref={provided.innerRef}
              {...provided.droppableProps}
              isDraggingOver={snapshot.isDraggingOver}
              >
-              {this.props.tasks.map((task, index) => (
-                <Task key={task.id} task={task} index={index} />
+              {this.props.item.map((item, index) => (
+                <Item key={item.id} item={item} index={index} />
               ))}
               {provided.placeholder}
-            </TaskList>
+            </ItemList>
           )}
         </Droppable>
       </div>

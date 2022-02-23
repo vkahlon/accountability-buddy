@@ -41,17 +41,17 @@ export default class UserInfo extends React.Component {
                       'column-1': {
                         id: 'column-1',
                         title: 'Exercises',
-                        taskIds: exerciseList
+                        healthItemIds: exerciseList
                       },
                       'column-2': {
                         id: 'column-2',
                         title: 'Meals',
-                        taskIds: mealList
+                        healthItemIds: mealList
                       },
                       'column-3': {
                         id: 'column-3',
                         title: 'Today',
-                        taskIds: []
+                        healthItemIds: []
                       }
                     },
                     columnOrder: ['column-1', 'column-2', 'column-3'],
