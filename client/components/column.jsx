@@ -13,8 +13,8 @@ const TaskList = styled.div`
 export default class Column extends React.Component {
   render() {
     return (
-      <div className='m-3' style={{ margin: '8px', border: '1px solid black', borderRadius: '2px', width: '140px' }}>
-        <h4 className='mt-2 text-center'>{this.props.column.title}</h4>
+      <div className='m-3' style={{ margin: '8px', border: '4px solid rgb(232,232,232)', borderRadius: '5px', width: '140px' }}>
+        <h4 className='mt-2 text-center' style={{ color: 'rgb(24, 49, 83)' }}>{this.props.column.title}</h4>
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
             <TaskList ref={provided.innerRef}
