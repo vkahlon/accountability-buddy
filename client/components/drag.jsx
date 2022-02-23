@@ -21,36 +21,63 @@ export default class Drag extends React.Component {
     ) {
       return;
     }
-    const column = this.state.columns[source.droppableId];
-    const newResult = Array.from(column.taskIds);
-    const [removed] = newResult.splice(result.source.index, 1);
-    newResult.splice(result.destination.index, 0, removed);
+    const start = this.state.columns[source.droppableId];
+    const finish = this.state.columns[destination.droppableId];
+    if (start === finish) {
+      const newResult = Array.from(start.taskIds);
+      const [removed] = newResult.splice(result.source.index, 1);
+      newResult.splice(result.destination.index, 0, removed);
 
-    const newColumn = {
-      ...column,
-      taskIds: newResult
+      const newColumn = {
+        ...start,
+        taskIds: newResult
+      };
+
+      const newState = {
+        ...this.state,
+        columns: {
+          ...this.state.columns,
+          [newColumn.id]: newColumn
+        }
+      };
+      return this.setState(newState);
+    }
+    // Moving from one list to another
+    const startTaskIds = Array.from(start.taskIds);
+    const indexThatLeft = startTaskIds.splice(source.index, 1);
+    const newStart = {
+      ...start,
+      taskIds: startTaskIds
     };
-
+    const finishTaskIds = Array.from(finish.taskIds);
+    finishTaskIds.splice(destination.index, 0, indexThatLeft[0]);
+    const newFinish = {
+      ...finish,
+      taskIds: finishTaskIds
+    };
     const newState = {
       ...this.state,
       columns: {
         ...this.state.columns,
-        [newColumn.id]: newColumn
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish
       }
     };
-    this.setState(newState);
+    return this.setState(newState);
   }
 
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <h1>Test</h1>
+        <h3 style={{ textAlign: 'center' }}>{this.state.dailyCalorie} Calories Remaining</h3>
+        <div className='row d-flex justify-content-center'>
         {this.state.columnOrder.map(columnId => {
           const column = this.state.columns[columnId];
           const tasks = column.taskIds;
 
           return <Column key={column.id} column={column} tasks={tasks} />;
-        })};
+        })}
+        </div>
       </DragDropContext>
     );
   }

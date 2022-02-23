@@ -7,22 +7,24 @@ const Container = styled.div`
   margin: 8px;
   border: 1px solid black;
   border-radius: 2px;
-  width: 400px
+  width: 170px
 `;
-const Title = styled.h3`
+const Title = styled.h4`
   padding: 8px;
+  text-align: center
 `;
 const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.2s ease;
   background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+  min-height: 100px;
 `;
 
 export default class Column extends React.Component {
   render() {
     return (
       <Container>
-        <Title style={{ textAlign: 'center' }}>{this.props.column.title}</Title>
+        <Title>{this.props.column.title}</Title>
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
             <TaskList ref={provided.innerRef}

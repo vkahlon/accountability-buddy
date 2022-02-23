@@ -21,9 +21,9 @@ export default class Task extends React.Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <img style={{ width: '50px' }} src={this.props.task.icon} alt="icon" />
-            {this.props.task.content}
-            {` ${this.props.task.calories} cal`}
+            <div className='row d-flex justify-content-center'><img style={{ width: '33%' }} src={this.props.task.icon} alt="icon" /></div>
+            <div className='row d-flex justify-content-center'>{this.props.task.content}</div>
+            <div className='row d-flex justify-content-center'>{` ${this.props.task.calories} cal`}</div>
           </Container>
         )}
       </Draggable>
