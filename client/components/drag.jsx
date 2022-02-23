@@ -63,12 +63,14 @@ export default class Drag extends React.Component {
         [newFinish.id]: newFinish
       }
     };
-    if (destination.droppableId === 'column-3') {
-      const currentCalorie = newState.dailyCalorie;
-      const itemCalorie = indexThatLeft[0].calories;
-      const newDailyCalorie = currentCalorie + itemCalorie;
-      newState.dailyCalorie = newDailyCalorie;
+    const dailyCalorie = this.props.calorie;
+    const col3Data = newState.columns['column-3'].taskIds;
+    let col3Sum = 0;
+    for (let i = 0; i < col3Data.length; i++) {
+      col3Sum += col3Data[i].calories;
     }
+    const todayCalorie = dailyCalorie + col3Sum;
+    newState.dailyCalorie = todayCalorie;
     return this.setState(newState);
   }
 

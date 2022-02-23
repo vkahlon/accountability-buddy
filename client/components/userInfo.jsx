@@ -7,7 +7,6 @@ export default class UserInfo extends React.Component {
   }
 
   componentDidMount() {
-    const allItems = [];
     const mealList = [];
     const exerciseList = [];
     fetch('api/meals')
@@ -17,9 +16,8 @@ export default class UserInfo extends React.Component {
         for (let i = 0; i < mealData.length; i++) {
           const idString = (`meal-${mealData[i].mealId}`);
           mealList.push({ id: idString, content: mealData[i].mealName, calories: -mealData[i].calories, icon: './images/fork.png' });
-          allItems.push({ id: idString, content: mealData[i].mealName, calories: -mealData[i].calories, icon: './images/fork.png' });
         }
-        return allItems;
+        return mealList;
       });
     fetch('api/exercises')
       .then(response => response.json())
@@ -28,9 +26,8 @@ export default class UserInfo extends React.Component {
         for (let i = 0; i < exerciseData.length; i++) {
           const idString = (`exercise-${exerciseData[i].exerciseId}`);
           exerciseList.push({ id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: './images/dumbell.png' });
-          allItems.push({ id: idString, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: './images/dumbell.png' });
         }
-        return allItems;
+        return exerciseList;
       });
 
     fetch('api/user')
@@ -57,10 +54,10 @@ export default class UserInfo extends React.Component {
               }
             },
             columnOrder: ['column-1', 'column-2', 'column-3'],
-            dailyCalorie: calorie[0].dailyCalorie,
-            reserveCalorie: calorie[0].dailyCalorie
+            dailyCalorie: calorie[0].dailyCalorie
           },
-          isLoading: false
+          isLoading: false,
+          reserveCalorie: calorie[0].dailyCalorie
         }
         );
       });
@@ -75,6 +72,6 @@ export default class UserInfo extends React.Component {
           </div>
         </div>
       </div>
-      : <Drag codex={this.state.data} />;
+      : <Drag codex={this.state.data} calorie={this.state.reserveCalorie} />;
   }
 }
