@@ -178,7 +178,7 @@ app.get('/api/edit-Meal-items', (req, res, next) => {
       const mealList = [];
       const mealData = result.rows;
       for (let i = 0; i < mealData.length; i++) {
-        mealList.push({ id: mealData[i].mealId, content: mealData[i].mealName, calories: mealData[i].calories, icon: './images/fork.png' });
+        mealList.push({ id: mealData[i].mealId, content: mealData[i].mealName, calories: mealData[i].calories, icon: 'fa-solid fa-utensils' });
       }
       res.json(mealList);
     })
@@ -194,7 +194,7 @@ app.get('/api/edit-Exercise-items', (req, res, next) => {
       const exerciseList = [];
       const exerciseData = result.rows;
       for (let i = 0; i < exerciseData.length; i++) {
-        exerciseList.push({ id: exerciseData[i].exerciseId, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: './images/dumbell.png' });
+        exerciseList.push({ id: exerciseData[i].exerciseId, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: 'fa-solid fa-dumbbell' });
       }
       res.json(exerciseList);
     })

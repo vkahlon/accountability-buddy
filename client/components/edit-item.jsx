@@ -6,8 +6,17 @@ export default class EditItem extends React.Component {
     super(props);
     this.state = {
       retrieving: true,
-      data: ''
+      data: '',
+      objective: '',
+      id: 0
     };
+    this.handleClick = this.handleClick.bind(this);
+
+  }
+
+  handleClick(id, objective) {
+    const newState = { objective: objective, id: id };
+    this.setState(newState);
   }
 
   componentDidMount() {
@@ -24,14 +33,14 @@ export default class EditItem extends React.Component {
     let visualizeData = [...this.state.data];
     visualizeData = visualizeData.map(healthItem => {
       return (
-        <div key={healthItem.id}className="col-4 col-md-3 col-lg-2" style={{ border: '1px solid black' }}>
+        <div key={healthItem.id} className="m-3 col-4 col-md-3 col-lg-2 rounded" style={{ border: '2px solid rgb(52,58,63)' }}>
           <span className='row d-flex justify-content-end'>
-            <button style={{ lineHeight: '1.0' }} className='btn btn-outline-danger'>X</button>
+            <button onClick={() => { this.handleClick(healthItem.id, 'delete'); }} style={{ lineHeight: '.08' }} className='btn btn-outline-danger mr-1 mt-1 p-2'>X</button>
           </span>
           <div className="row d-flex justify-content-center">
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-start">
               <div className="col-8">
-                <button className='btn btn-outline-primary'><img src={healthItem.icon} alt="icon" style={{ width: '100%' }} /></button>
+                <button onClick={() => { this.handleClick(healthItem.id, 'edit'); }} className='btn btn-outline-primary'><i style={{ fontSize: '40px' }}className={healthItem.icon}></i></button>
               </div>
             </div>
           </div>
@@ -57,8 +66,10 @@ export default class EditItem extends React.Component {
       return (
         <>
           <Header header={this.props.status}></Header>
-          <div className=''>
-            {visualizeData}
+          <div className='container'>
+            <div className='row d-flex justify-content-center'>
+              {visualizeData}
+            </div>
           </div>
         </>
       );
