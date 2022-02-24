@@ -5,7 +5,7 @@ export default function EditExercise(props) {
   return (
     <>
       <Navbar />
-      <EditItem purpose={'Exercise'} status={'Edit an Exercise'} />
+      <EditItem purpose={'Exercise'} status={'Edit Exercises'} />
     </>
   );
 }

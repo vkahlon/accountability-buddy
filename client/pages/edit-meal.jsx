@@ -5,7 +5,7 @@ export default function EditMeal(props) {
   return (
     <>
       <Navbar />
-      <EditItem purpose={'Meal'} status={'Edit a Meal'}/>
+      <EditItem purpose={'Meal'} status={'Edit Meals'}/>
     </>
   );
 }

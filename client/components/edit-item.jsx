@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import Loading from './loading';
+import EditForm from './edit-form';
 export default class EditItem extends React.Component {
   constructor(props) {
     super(props);
@@ -11,11 +12,17 @@ export default class EditItem extends React.Component {
       id: 0
     };
     this.handleClick = this.handleClick.bind(this);
-
   }
 
   handleClick(id, objective) {
-    const newState = { objective: objective, id: id };
+    const currentStateList = [...this.state.data];
+    let selectedItem = null;
+    for (let i = 0; i < currentStateList.length; i++) {
+      if (id === currentStateList[i].id) {
+        selectedItem = currentStateList[i];
+      }
+    }
+    const newState = { item: selectedItem, objective: objective, id: id };
     this.setState(newState);
   }
 
@@ -63,16 +70,32 @@ export default class EditItem extends React.Component {
         </>
       );
     } else {
-      return (
-        <>
-          <Header header={this.props.status}></Header>
-          <div className='container'>
-            <div className='row d-flex justify-content-center'>
-              {visualizeData}
+      if (this.state.id === 0) {
+        return (
+          <>
+            <Header header={this.props.status}></Header>
+            <div className='container'>
+              <div className='row d-flex justify-content-center'>
+                {visualizeData}
+              </div>
             </div>
-          </div>
-        </>
-      );
+          </>
+        );
+      } else {
+        if (this.state.objective === 'edit') {
+          return (
+            <>
+              <EditForm item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
+            </>
+          );
+        } else if (this.state.objective === 'delete') {
+          return (
+            <h1>Delete Meal</h1>
+          );
+        }
+
+      }
+
     }
   }
 
