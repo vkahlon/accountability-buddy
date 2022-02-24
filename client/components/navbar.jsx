@@ -26,9 +26,9 @@ export default class Navbar extends React.Component {
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" style={{ color: '#007BFF' }} role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Edit
               </a>
-              <div className="dropdown-menu color-primary" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" style={{ color: '#007BFF' }} href="#">Meal</a>
-                <a className="dropdown-item" style={{ color: '#007BFF' }} href="#">Exercises</a>
+              <div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+                <a className="dropdown-item bg-dark" style={{ color: '#007BFF' }} href="#edit-meal">Meal</a>
+                <a className="dropdown-item bg-dark" style={{ color: '#007BFF' }} href="#edit-exercise">Exercises</a>
               </div>
             </li>
           </ul>

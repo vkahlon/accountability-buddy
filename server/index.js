@@ -168,7 +168,7 @@ app.put('/api/calorie/edit-Meal/:mealId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/edit-meals', (req, res, next) => {
+app.get('/api/edit-Meal-items', (req, res, next) => {
   const sql = `
     select *
       from "meals"
@@ -184,7 +184,7 @@ app.get('/api/edit-meals', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/edit-exercises', (req, res, next) => {
+app.get('/api/edit-Exercise-items', (req, res, next) => {
   const sql = `
     select *
       from "exercises"
