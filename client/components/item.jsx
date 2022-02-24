@@ -23,7 +23,7 @@ export default class Item extends React.Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <div className='row d-flex justify-content-center'><img style={{ width: '33%' }} src={this.props.item.icon} alt="icon" /></div>
+            <div className='row d-flex justify-content-center'><img style={{ width: '30%' }} src={this.props.item.icon} alt="icon" /></div>
             <div className='row d-flex justify-content-center'>{this.props.item.content}</div>
             <div className='row d-flex justify-content-center'>{` ${this.props.item.calories} cal`}</div>
           </Container>
