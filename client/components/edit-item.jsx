@@ -70,7 +70,7 @@ export default class EditItem extends React.Component {
         </>
       );
     } else {
-      if (this.state.id === 0) {
+      if (this.state.objective === '') {
         return (
           <>
             <Header header={this.props.status}></Header>
@@ -90,13 +90,29 @@ export default class EditItem extends React.Component {
           );
         } else if (this.state.objective === 'delete') {
           return (
-            <h1>Delete Meal</h1>
+            <>
+              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Launch demo modal
+              </button>
+                <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLongTitle">Delete this {this.props.purpose}?</h5>
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-danger">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
           );
         }
-
       }
-
     }
   }
-
 }
