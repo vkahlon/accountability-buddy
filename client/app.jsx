@@ -6,6 +6,8 @@ import parseRoute from './library/parse-route';
 import Meals from './pages/meals';
 import Exercises from './pages/exercises';
 import Codex from './pages/codex';
+import EditMeal from './pages/edit-meal';
+import EditExercise from './pages/edit-exercise';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -39,6 +41,12 @@ export default class App extends React.Component {
     }
     if (route.path === 'codex') {
       return <Codex />;
+    }
+    if (route.path === 'edit-meal') {
+      return <EditMeal />;
+    }
+    if (route.path === 'edit-exercise') {
+      return <EditExercise />;
     }
     return <NotFound />;
   }

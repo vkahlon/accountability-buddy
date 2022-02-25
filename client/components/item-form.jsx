@@ -1,10 +1,12 @@
 import React from 'react';
 import Stats from './stats';
 import Header from './header';
+import Loading from './loading';
 export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       results: '',
       calories: '',
       item: ''
@@ -19,6 +21,7 @@ export default class ItemForm extends React.Component {
   }
 
   handleSubmit(event) {
+    this.setState({ loading: true });
     const action = this.props.purpose;
     event.preventDefault();
     const req = {
@@ -31,11 +34,19 @@ export default class ItemForm extends React.Component {
     fetch(`/api/calorie/add-${action}`, req)
       .then(res => res.json())
       .then(result => {
-        this.setState({ results: result });
+        this.setState({ results: result, loading: false });
       });
   }
 
   render() {
+    if (this.state.loading === true) {
+      return (
+        <>
+          <Header header={'Loading'} />
+          < Loading />
+        </>
+      );
+    }
     if (this.state.results !== '') {
       return (
         <>
@@ -48,7 +59,7 @@ export default class ItemForm extends React.Component {
     const calorieLength = this.state.calories.length;
     let warningCal = null;
     let warningMeal = null;
-    if (itemLength > 19) {
+    if (itemLength > 14) {
       warningMeal = <p className='text-danger'>Reached Character Limit</p>;
     }
     if (calorieLength === 4) {
@@ -67,7 +78,7 @@ export default class ItemForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group mt-3">
             <label htmlFor="name">{this.props.purpose} Name</label>
-                  <input onChange={this.handleChange} type="text" className="form-control" maxLength={20} required id="item" name="item" aria-describedby="AgeHelp" placeholder="Enter Name" />
+                  <input onChange={this.handleChange} type="text" className="form-control" maxLength={15} required id="item" name="item" aria-describedby="AgeHelp" placeholder="Enter Name" />
           </div>
           <div>{warningMeal}</div>
           <div className="form-group">

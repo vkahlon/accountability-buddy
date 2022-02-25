@@ -111,6 +111,124 @@ app.post('/api/calorie/add-Exercise', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+app.put('/api/calorie/edit-Exercise/:exerciseId', (req, res, next) => {
+  const exerciseId = Number(req.params.exerciseId);
+  const { item, calories } = req.body;
+  if (!item || !calories) {
+    throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
+  }
+  if ((item.length > 20) || (calories.toString().length > 5)) {
+    throw new ClientError(400, `Exercise name must be under 20 characters. Value must be under 6 digits. Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
+  }
+  const sql = `
+        update "exercises"
+        set "exerciseName" = $1,
+            "calories" = $2
+        where "exerciseId" = $3
+        RETURNING *
+      `;
+  const params = [item, calories, exerciseId];
+  db.query(sql, params)
+    .then(result => {
+      const [newExercise] = result.rows;
+      if (!newExercise) {
+        throw new ClientError(404, 'cannot find user with userId of 1');
+      } else {
+        res.json(newExercise);
+      }
+    })
+    .catch(err => next(err));
+});
+app.put('/api/calorie/edit-Meal/:mealId', (req, res, next) => {
+  const mealId = Number(req.params.mealId);
+  const { item, calories } = req.body;
+  if (!item || !calories) {
+    throw new ClientError(400, `Condition 1: meal: ${item}, value: ${calories} are required fields`);
+  }
+  if ((item.length > 20) || (calories.toString().length > 5)) {
+    throw new ClientError(400, `Meal name must be under 20 characters. Value must be under 6 digits. Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
+  }
+  const sql = `
+        update "meals"
+        set "mealName" = $1,
+            "calories" = $2
+        where "mealId" = $3
+        RETURNING *
+      `;
+  const params = [item, calories, mealId];
+  db.query(sql, params)
+    .then(result => {
+      const [newMeal] = result.rows;
+      if (!newMeal) {
+        throw new ClientError(404, 'Something went Wrong');
+      } else {
+        res.json(newMeal);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/edit-Meal-items', (req, res, next) => {
+  const sql = `
+    select *
+      from "meals"
+  `;
+  db.query(sql)
+    .then(result => {
+      const mealList = [];
+      const mealData = result.rows;
+      for (let i = 0; i < mealData.length; i++) {
+        mealList.push({ id: mealData[i].mealId, content: mealData[i].mealName, calories: mealData[i].calories, icon: 'fa-solid fa-utensils' });
+      }
+      res.json(mealList);
+    })
+    .catch(err => next(err));
+});
+app.get('/api/edit-Exercise-items', (req, res, next) => {
+  const sql = `
+    select *
+      from "exercises"
+  `;
+  db.query(sql)
+    .then(result => {
+      const exerciseList = [];
+      const exerciseData = result.rows;
+      for (let i = 0; i < exerciseData.length; i++) {
+        exerciseList.push({ id: exerciseData[i].exerciseId, content: exerciseData[i].exerciseName, calories: exerciseData[i].calories, icon: 'fa-solid fa-dumbbell' });
+      }
+      res.json(exerciseList);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/delete-Exercise/:exerciseId', (req, res, next) => {
+  const exerciseId = Number(req.params.exerciseId);
+  const sql = `
+     delete from "exercises"
+     where "exerciseId" = $1
+     returning *
+   `;
+  const params = [exerciseId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+app.delete('/api/delete-Meal/:mealId', (req, res, next) => {
+  const mealId = Number(req.params.mealId);
+  const sql = `
+     delete from "meals"
+     where "mealId" = $1
+     returning *
+   `;
+  const params = [mealId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
 
 app.put('/api/calorie/get-calorie', (req, res, next) => {
   let { age, weight, height, goal, level, gender, metric } = req.body;

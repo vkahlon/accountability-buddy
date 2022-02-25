@@ -1,5 +1,6 @@
 import React from 'react';
 import Drag from './drag';
+import Loading from './loading';
 export default class UserInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -59,13 +60,7 @@ export default class UserInfo extends React.Component {
 
   render() {
     return this.state.isLoading
-      ? <div className='container'>
-        <div className='row d-flex justify-content-center'>
-          <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      </div>
+      ? <Loading></Loading>
       : <Drag codex={this.state.data} calorie={this.state.reserveCalorie} />;
   }
 }
