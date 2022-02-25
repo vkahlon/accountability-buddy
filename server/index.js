@@ -206,6 +206,7 @@ app.delete('/api/delete-Exercise/:exerciseId', (req, res, next) => {
   const sql = `
      delete from "exercises"
      where "exerciseId" = $1
+     returning *
    `;
   const params = [exerciseId];
   db.query(sql, params)
@@ -219,6 +220,7 @@ app.delete('/api/delete-Meal/:mealId', (req, res, next) => {
   const sql = `
      delete from "meals"
      where "mealId" = $1
+     returning *
    `;
   const params = [mealId];
   db.query(sql, params)

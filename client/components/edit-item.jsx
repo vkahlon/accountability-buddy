@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import Loading from './loading';
 import EditForm from './edit-form';
+import EditStats from './edit-stats';
 export default class EditItem extends React.Component {
   constructor(props) {
     super(props);
@@ -16,8 +17,22 @@ export default class EditItem extends React.Component {
   }
 
   handleDeletion(item) {
-    // console.log(this.props.purpose);
-    // console.log(item);
+    const action = this.props.purpose;
+    const id = item.id;
+    event.preventDefault();
+    const req = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    };
+    fetch(`/api/delete-${action}/${id}`, req)
+      .then(res => res.json())
+      .then(data => {
+        const [deletedItem] = data;
+        this.setState({ results: deletedItem, objective: 'deleted' });
+      });
   }
 
   handleClick(id, objective) {
@@ -93,7 +108,7 @@ export default class EditItem extends React.Component {
                     </button>
                   </div>
                   <div className="modal-footer">
-                    <button onClick={() => { this.handleDeletion(this.state.item); }} type="button" className="btn btn-danger">Delete</button>
+                    <button onClick={() => { this.handleDeletion(this.state.item); }} type="button" className="btn btn-danger" data-dismiss="modal" aria-label="Close">Delete</button>
                   </div>
                 </div>
               </div>
@@ -106,14 +121,19 @@ export default class EditItem extends React.Component {
             </div>
           </>
         );
-      } else {
-        if (this.state.objective === 'edit') {
-          return (
+      } else if (this.state.objective === 'edit') {
+        return (
             <>
               <EditForm item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
             </>
-          );
-        }
+        );
+      } else if (this.state.objective === 'deleted') {
+        return (
+          <>
+            <Header header={`${this.props.purpose} Deleted`} />
+            <EditStats stats={this.state.results} purpose={this.props.purpose} />
+          </>
+        );
       }
     }
   }
