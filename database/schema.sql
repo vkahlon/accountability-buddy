@@ -1,5 +1,6 @@
 CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
+	"userName" text NOT NULL,
 	"dailyCalorie" int NOT NULL,
 	"hashedPassword" TEXT NOT NULL,
 	"joinedAt" timestamptz,
