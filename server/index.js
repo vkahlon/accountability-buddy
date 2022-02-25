@@ -201,6 +201,33 @@ app.get('/api/edit-Exercise-items', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/delete-Exercise/:exerciseId', (req, res, next) => {
+  const exerciseId = Number(req.params.exerciseId);
+  const sql = `
+     delete from "exercises"
+     where "exerciseId" = $1
+   `;
+  const params = [exerciseId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+app.delete('/api/delete-Meal/:mealId', (req, res, next) => {
+  const mealId = Number(req.params.mealId);
+  const sql = `
+     delete from "meals"
+     where "mealId" = $1
+   `;
+  const params = [mealId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.put('/api/calorie/get-calorie', (req, res, next) => {
   let { age, weight, height, goal, level, gender, metric } = req.body;
   if (!age || !weight || !height || !goal || !level || !gender || typeof metric === 'undefined') {

@@ -12,17 +12,27 @@ export default class EditItem extends React.Component {
       id: 0
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleDeletion = this.handleDeletion.bind(this);
+  }
+
+  handleDeletion(item) {
+    // console.log(this.props.purpose);
+    // console.log(item);
   }
 
   handleClick(id, objective) {
     const currentStateList = [...this.state.data];
     let selectedItem = null;
+    let newState = null;
     for (let i = 0; i < currentStateList.length; i++) {
       if (id === currentStateList[i].id) {
         selectedItem = currentStateList[i];
       }
+    } if (objective === 'edit') {
+      newState = { item: selectedItem, objective: objective, id: id };
+    } else {
+      newState = { item: selectedItem, id: id };
     }
-    const newState = { item: selectedItem, objective: objective, id: id };
     this.setState(newState);
   }
 
@@ -42,7 +52,7 @@ export default class EditItem extends React.Component {
       return (
         <div key={healthItem.id} className="m-3 col-4 col-md-3 col-lg-2 rounded" style={{ border: '2px solid rgb(52,58,63)' }}>
           <span className='row d-flex justify-content-end'>
-            <button onClick={() => { this.handleClick(healthItem.id, 'delete'); }} style={{ lineHeight: '.08' }} className='btn btn-outline-danger mr-1 mt-1 p-2'>X</button>
+            <button onClick={() => { this.handleClick(healthItem.id); }} style={{ lineHeight: '.08' }} className='btn btn-outline-danger mr-1 mt-2 p-2' data-toggle="modal" data-target="#exampleModal">X</button>
           </span>
           <div className="row d-flex justify-content-center">
             <div className="d-flex justify-content-start">
@@ -73,6 +83,21 @@ export default class EditItem extends React.Component {
       if (this.state.objective === '') {
         return (
           <>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLongTitle">Delete this {this.props.purpose}?</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-footer">
+                    <button onClick={() => { this.handleDeletion(this.state.item); }} type="button" className="btn btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <Header header={this.props.status}></Header>
             <div className='container'>
               <div className='row d-flex justify-content-center'>
@@ -86,29 +111,6 @@ export default class EditItem extends React.Component {
           return (
             <>
               <EditForm item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
-            </>
-          );
-        } else if (this.state.objective === 'delete') {
-          return (
-            <>
-              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Launch demo modal
-              </button>
-                <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLongTitle">Delete this {this.props.purpose}?</h5>
-                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-danger">Delete</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </>
           );
         }
