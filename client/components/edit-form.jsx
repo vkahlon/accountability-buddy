@@ -1,13 +1,14 @@
 import React from 'react';
-import Stats from './stats';
+import EditStats from './edit-stats';
 import Header from './header';
 import EditItem from './edit-item';
 export default class EditForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: 0,
+      stage: 0,
       calories: '',
+      results: '',
       item: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -21,6 +22,7 @@ export default class EditForm extends React.Component {
 
   handleSubmit(event) {
     const action = this.props.purpose;
+    const id = this.props.item.id;
     event.preventDefault();
     const req = {
       method: 'PUT',
@@ -29,23 +31,23 @@ export default class EditForm extends React.Component {
       },
       body: JSON.stringify(this.state)
     };
-    fetch(`/api/calorie/add-${action}`, req)
+    fetch(`/api/calorie/edit-${action}/${id}`, req)
       .then(res => res.json())
-      .then(result => {
-        this.setState({ results: result });
+      .then(data => {
+        this.setState({ results: data, stage: 1 });
       });
   }
 
   render() {
-    if (this.state.results === 1) {
+    if (this.state.stage === 1) {
       return (
         <>
-          <Header header={`${this.props.purpose} Added`} />
-          < Stats stats={this.state} purpose={'item'} />
+          <Header header={`${this.props.purpose} Changed`} />
+          < EditStats stats={this.state.results} purpose={this.props.purpose} />
         </>
       );
     }
-    if (this.state.results === 2) {
+    if (this.state.stage === 2) {
       return (
         <>
           <EditItem purpose={this.props.purpose} status={`${this.props.status}s`} />
@@ -90,7 +92,7 @@ export default class EditForm extends React.Component {
             </div>
           </div>
           <div className='row d-flex justify-content-center'>
-          <button onClick={() => { this.setState({ results: 2 }); }} className="btn btn-link mt-3 mr-3">Go Back</button>
+            <button onClick={() => { this.setState({ stage: 2 }); }} className="btn btn-link mt-3 mr-3">Go Back</button>
           </div>
         </div>
       </>
