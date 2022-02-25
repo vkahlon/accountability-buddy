@@ -58,7 +58,7 @@ export default class EditForm extends React.Component {
     const calorieLength = this.state.calories.length;
     let warningCal = null;
     let warningMeal = null;
-    if (itemLength > 19) {
+    if (itemLength > 14) {
       warningMeal = <p className='text-danger'>Reached Character Limit</p>;
     }
     if (calorieLength === 4) {
@@ -77,7 +77,7 @@ export default class EditForm extends React.Component {
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group mt-3">
                   <label htmlFor="name">Edit {this.props.purpose} Name</label>
-                  <input onChange={this.handleChange} type="text" className="form-control" maxLength={20} required id="item" name="item" aria-describedby="AgeHelp" placeholder={this.props.item.content} />
+                  <input onChange={this.handleChange} type="text" className="form-control" maxLength={15} required id="item" name="item" aria-describedby="AgeHelp" placeholder={this.props.item.content} />
                 </div>
                 <div>{warningMeal}</div>
                 <div className="form-group">
