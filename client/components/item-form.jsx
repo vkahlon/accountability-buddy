@@ -1,10 +1,12 @@
 import React from 'react';
 import Stats from './stats';
 import Header from './header';
+import Loading from './loading';
 export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       results: '',
       calories: '',
       item: ''
@@ -19,6 +21,7 @@ export default class ItemForm extends React.Component {
   }
 
   handleSubmit(event) {
+    this.setState({ loading: true });
     const action = this.props.purpose;
     event.preventDefault();
     const req = {
@@ -31,11 +34,19 @@ export default class ItemForm extends React.Component {
     fetch(`/api/calorie/add-${action}`, req)
       .then(res => res.json())
       .then(result => {
-        this.setState({ results: result });
+        this.setState({ results: result, loading: false });
       });
   }
 
   render() {
+    if (this.state.loading === true) {
+      return (
+        <>
+          <Header header={'Loading'} />
+          < Loading />
+        </>
+      );
+    }
     if (this.state.results !== '') {
       return (
         <>

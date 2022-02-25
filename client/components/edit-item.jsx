@@ -62,6 +62,12 @@ export default class EditItem extends React.Component {
   }
 
   render() {
+    let emptyWarning = null;
+    if (this.props.purpose === 'Meal') {
+      emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4' > <a href="#meals">You have No {this.props.purpose}s</a></p></div></div >;
+    } else {
+      emptyWarning = <div className='container'><div className='col-lg-11 ml-2'><p className='text-center font-italic mt-4' > <a href="#exercises">You have No {this.props.purpose}s</a></p></div></div >;
+    }
     let visualizeData = [...this.state.data];
     visualizeData = visualizeData.map(healthItem => {
       return (
@@ -94,9 +100,15 @@ export default class EditItem extends React.Component {
         <Loading></Loading>
         </>
       );
-    } else {
-      if (this.state.objective === '') {
-        return (
+    } else if (this.state.data.length === 0) {
+      return (
+    <>
+      <Header header={`No ${this.props.purpose}s`} />
+      {emptyWarning}
+    </>
+      );
+    } else if (this.state.objective === '') {
+      return (
           <>
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered" role="document">
@@ -120,21 +132,20 @@ export default class EditItem extends React.Component {
               </div>
             </div>
           </>
-        );
-      } else if (this.state.objective === 'edit') {
-        return (
+      );
+    } else if (this.state.objective === 'edit') {
+      return (
             <>
               <EditForm item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
             </>
-        );
-      } else if (this.state.objective === 'deleted') {
-        return (
+      );
+    } else if (this.state.objective === 'deleted') {
+      return (
           <>
             <Header header={`${this.props.purpose} Deleted`} />
             <EditStats stats={this.state.results} purpose={this.props.purpose} />
           </>
-        );
-      }
+      );
     }
   }
 }
