@@ -5,6 +5,7 @@ const argon2 = require('argon2');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const jsonMiddleware = express.json();
@@ -312,6 +313,39 @@ app.post('/api/auth/Register', (req, res, next) => {
           res.status(201).json(newUser);
         })
         .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/auth/sign-in', (req, res, next) => {
+  const { userName, password } = req.body;
+  if (!userName || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+    select "userId",
+           "hashedPassword"
+      from "users"
+     where "userName" = $1
+  `;
+  const params = [userName];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid login');
+      }
+      const { userId, hashedPassword } = user;
+      return argon2
+        .verify(hashedPassword, password)
+        .then(isMatching => {
+          if (!isMatching) {
+            throw new ClientError(401, 'invalid login');
+          }
+          const payload = { userId, userName };
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+          res.json({ token, user: payload });
+        });
     })
     .catch(err => next(err));
 });
