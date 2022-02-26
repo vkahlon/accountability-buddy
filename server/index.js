@@ -1,6 +1,7 @@
 require('dotenv/config');
 const express = require('express');
 const pg = require('pg');
+const argon2 = require('argon2');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
@@ -272,7 +273,7 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
   const sql = `
         update "users"
         set "dailyCalorie" = $1
-        where "userId" = 1
+        where "userId" = 2
         returning *
       `;
   const params = [bmr];
@@ -286,7 +287,33 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-
+});
+app.post('/api/auth/Register', (req, res, next) => {
+  const { userName, password } = req.body;
+  const standardCalorie = 2000;
+  if (!userName || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  if (password.length < 8) {
+    throw new ClientError(400, `Password must be greater than 8 characters. Your password length ${password.length}`);
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+    insert into "users" ("userName", "dailyCalorie", "hashedPassword")
+    values ($1, $2, $3)
+    returning "userId", "userName", "dailyCalorie"
+  `;
+      const params = [userName, standardCalorie, hashedPassword];
+      db.query(sql, params)
+        .then(result => {
+          const [newUser] = result.rows;
+          res.status(201).json(newUser);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
 });
 
 app.use(staticMiddleware);

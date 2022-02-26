@@ -8,6 +8,7 @@ import Exercises from './pages/exercises';
 import Codex from './pages/codex';
 import EditMeal from './pages/edit-meal';
 import EditExercise from './pages/edit-exercise';
+import Register from './pages/register';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,6 +48,9 @@ export default class App extends React.Component {
     }
     if (route.path === 'edit-exercise') {
       return <EditExercise />;
+    }
+    if (route.path === 'register') {
+      return <Register />;
     }
     return <NotFound />;
   }
