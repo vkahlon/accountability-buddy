@@ -1,12 +1,10 @@
 CREATE TABLE "public"."users" (
-	"userId" serial NOT NULL,
+	"userId" serial,
 	"userName" text NOT NULL,
 	"dailyCalorie" int NOT NULL,
 	"hashedPassword" TEXT NOT NULL,
-	"joinedAt" timestamptz(6) not null default now()
-	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
-) WITH (
-  OIDS=FALSE
+  "createdAt" timestamptz(6) not null default now(),
+  primary key ("userId")
 );
 
 

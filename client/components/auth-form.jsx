@@ -50,6 +50,11 @@ export default class AuthForm extends React.Component {
       return (
         <>
           <Header header={'Account Created'} />
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="col-8 d-flex justify-content-center col-lg-4">
+              <a href="#">Return Home</a>
+            </div>
+          </div>
         </>
       );
     }

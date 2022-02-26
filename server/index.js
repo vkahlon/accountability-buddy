@@ -303,7 +303,7 @@ app.post('/api/auth/Register', (req, res, next) => {
       const sql = `
     insert into "users" ("userName", "dailyCalorie", "hashedPassword")
     values ($1, $2, $3)
-    returning "userId", "userName", "dailyCalorie" "joinedAt"
+    returning "userId", "userName", "dailyCalorie"
   `;
       const params = [userName, standardCalorie, hashedPassword];
       db.query(sql, params)
