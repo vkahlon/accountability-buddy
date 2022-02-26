@@ -288,7 +288,7 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.post('/api/auth/register', (req, res, next) => {
+app.post('/api/auth/Register', (req, res, next) => {
   const { userName, password } = req.body;
   const standardCalorie = 2000;
   if (!userName || !password) {
