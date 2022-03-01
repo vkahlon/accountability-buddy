@@ -4,7 +4,8 @@ CREATE TABLE "public"."users" (
 	"dailyCalorie" int NOT NULL,
 	"hashedPassword" TEXT NOT NULL,
   "createdAt" timestamptz(6) not null default now(),
-  primary key ("userId")
+  primary key ("userId"),
+  unique ("userName")
 );
 
 
@@ -28,3 +29,13 @@ CREATE TABLE "public"."exercises" (
 ) WITH (
   OIDS=FALSE
 );
+
+ALTER TABLE
+  "meals"
+ADD
+  CONSTRAINT "meals_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
+
+ALTER TABLE
+  "exercises"
+ADD
+  CONSTRAINT "exercises_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
