@@ -9,6 +9,7 @@ import Codex from './pages/codex';
 import EditMeal from './pages/edit-meal';
 import EditExercise from './pages/edit-exercise';
 import Register from './pages/register';
+import SignIn from './pages/sign-in';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -51,6 +52,9 @@ export default class App extends React.Component {
     }
     if (route.path === 'register') {
       return <Register />;
+    }
+    if (route.path === 'sign-in') {
+      return <SignIn />;
     }
     return <NotFound />;
   }

@@ -310,6 +310,7 @@ app.post('/api/auth/Register', (req, res, next) => {
       db.query(sql, params)
         .then(result => {
           const [newUser] = result.rows;
+          newUser.purpose = 'Register';
           res.status(201).json(newUser);
         })
         .catch(err => next(err));
@@ -317,7 +318,7 @@ app.post('/api/auth/Register', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/auth/sign-in', (req, res, next) => {
+app.post('/api/auth/Sign-In', (req, res, next) => {
   const { userName, password } = req.body;
   if (!userName || !password) {
     throw new ClientError(401, 'invalid login');

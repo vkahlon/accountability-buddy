@@ -46,7 +46,7 @@ export default class AuthForm extends React.Component {
         </>
       );
     }
-    if (this.state.results !== '') {
+    if (this.state.results.purpose === 'Register') {
       return (
         <>
           <Header header={'Account Created'} />
@@ -55,6 +55,13 @@ export default class AuthForm extends React.Component {
               <a href="#">Return Home</a>
             </div>
           </div>
+        </>
+      );
+    }
+    if (this.state.results.token !== undefined) {
+      return (
+        <>
+          <Header header={'Now'} />
         </>
       );
     }
