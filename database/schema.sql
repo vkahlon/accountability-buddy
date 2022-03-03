@@ -12,6 +12,7 @@ CREATE TABLE "public"."users" (
 
 CREATE TABLE "public"."meals" (
 	"mealId" serial NOT NULL,
+	"userId" int NOT NULL REFERENCES "users"("userId"),
 	"calories" int NOT NULL,
   "mealName" text NOT NULL,
 	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
@@ -23,19 +24,10 @@ CREATE TABLE "public"."meals" (
 
 CREATE TABLE "public"."exercises" (
 	"exerciseId" serial NOT NULL,
+  "userId" int NOT NULL REFERENCES "users"("userId"),
 	"calories" int NOT NULL,
   "exerciseName" text NOT NULL,
 	CONSTRAINT "exercises_pk" PRIMARY KEY ("exerciseId")
 ) WITH (
   OIDS=FALSE
 );
-
-ALTER TABLE
-  "meals"
-ADD
-  CONSTRAINT "meals_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
-
-ALTER TABLE
-  "exercises"
-ADD
-  CONSTRAINT "exercises_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
