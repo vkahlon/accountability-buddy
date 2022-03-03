@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import Loading from './loading';
+import Redirect from './redirect';
 export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
@@ -61,7 +62,7 @@ export default class AuthForm extends React.Component {
     if (this.state.results.token !== undefined) {
       return (
         <>
-          <Header header={'Now'} />
+          < Redirect to='#'/>
         </>
       );
     }

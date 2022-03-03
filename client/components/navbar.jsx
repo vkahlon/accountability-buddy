@@ -34,7 +34,7 @@ export default class Navbar extends React.Component {
           </ul>
           <ul className="navbar-nav d-flex justify-content-end">
             <li className="nav-item active d-flex justify-content-end">
-              <a className="nav-link" href="#sign-in" style={{ color: '#007BFF' }}>Sign In</a>
+              <a className="nav-link mr-4" href="#sign-in" style={{ color: '#007BFF' }}>Sign In</a>
               <a className="nav-link" href="#register" style={{ color: '#007BFF' }}>Register</a>
             </li>
           </ul>
