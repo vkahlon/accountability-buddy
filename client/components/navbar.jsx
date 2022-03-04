@@ -1,7 +1,7 @@
 import React from 'react';
 export default function Navbar(props) {
   let featurePages = null;
-  if (props.user) {
+  if (props.userId) {
     featurePages = <ul className="navbar-nav mr-auto">
       <li className="nav-item active">
         <a className="nav-link" href="#calculator" style={{ color: '#007BFF' }}>Calculator</a>

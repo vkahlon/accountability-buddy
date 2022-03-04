@@ -11,7 +11,6 @@ import EditMeal from './pages/edit-meal';
 import EditExercise from './pages/edit-exercise';
 import Register from './pages/register';
 import SignIn from './pages/sign-in';
-import Navbar from './components/navbar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,7 +30,7 @@ export default class App extends React.Component {
       });
     });
     const token = window.localStorage.getItem('buddy-access-jwt');
-    const user = token ? decodeToken(token) : null;
+    const user = token ? decodeToken(token) : 'undefined';
     this.setState({ user, isAuthorizing: false });
   }
 
@@ -76,7 +75,6 @@ export default class App extends React.Component {
   render() {
     if (this.state.isAuthorizing) return null;
     return <>
-      <Navbar user={this.state.user} />
       {this.renderPage()}
     </>;
   }
