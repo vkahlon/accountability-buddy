@@ -3,7 +3,7 @@ import Auth from '../components/auth-form';
 export default function SignIn(props) {
   return (
     <>
-      <Auth purpose={'Sign-In'} />
+      <Auth purpose={'Sign-In'} onSignIn={props.sign} />
     </>
   );
 }

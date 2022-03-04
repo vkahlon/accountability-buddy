@@ -9,7 +9,8 @@ export default class AuthForm extends React.Component {
       loading: false,
       results: '',
       password: '',
-      userName: ''
+      userName: '',
+      error: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,8 +18,29 @@ export default class AuthForm extends React.Component {
   }
 
   handleClick(guest, fakePassword) {
-    this.setState({ userName: guest, password: fakePassword });
-    this.handleSubmit();
+    this.setState({ loading: true });
+    const guestInfo = {
+      loading: false,
+      results: '',
+      password: fakePassword,
+      userName: guest
+    };
+    const action = this.props.purpose;
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(guestInfo)
+    };
+    fetch(`/api/auth/${action}`, req)
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ results: result, loading: false });
+        if (result.user && result.token) {
+          this.props.onSignIn(result);
+        }
+      });
   }
 
   handleChange(event) {
@@ -40,19 +62,33 @@ export default class AuthForm extends React.Component {
     fetch(`/api/auth/${action}`, req)
       .then(res => res.json())
       .then(result => {
-        this.setState({ results: result, loading: false });
-        if (this.props.purpose === 'Sign-In') {
-          window.localStorage.setItem('buddy-access-jwt', result.token);
+        if (result.error) {
+          return this.setState({ loading: false, password: '', userName: '', error: true });
+        }
+        this.setState({ results: result, loading: false, error: false });
+        if (result.user && result.token) {
+          this.props.onSignIn(result);
         }
       });
   }
 
   render() {
     let guest = null;
+    const usernameLength = this.state.userName.length;
+    const passwordLength = this.state.password.length;
+    let warningPassword = null;
+    let warningUsername = null;
+    if (usernameLength > 15) {
+      warningUsername = <p className='text-danger'>Reached Character Limit</p>;
+    }
+    if ((passwordLength > 0 && passwordLength < 8)) {
+      warningPassword = <p className='text-danger'>Must be 8 characters</p>;
+    }
     if (this.props.purpose === 'Sign-In') {
+      warningPassword = null;
       guest = <div className="row d-flex justify-content-center mt-4">
         <div className="col-8 d-flex justify-content-center col-lg-4">
-          <a onClick={() => { this.handleClick('Guest', 'password'); }}className="mr-3">Sign-In as Guest</a>
+          <a onClick={() => { this.handleClick('Guest', 'password'); }} className="mr-3 text-primary" style={{ cursor: 'pointer' }}>Sign-In as Guest</a>
         </div>
       </div>;
     }
@@ -83,22 +119,23 @@ export default class AuthForm extends React.Component {
         </>
       );
     }
-
-    const usernameLength = this.state.userName.length;
-    const passwordLength = this.state.password.length;
-    let warningPassword = null;
-    let warningUsername = null;
-    if (usernameLength > 15) {
-      warningUsername = <p className='text-danger'>Reached Character Limit</p>;
-    }
-    if ((passwordLength > 0 && passwordLength < 8)) {
-      warningPassword = <p className='text-danger'>Must be 8 characters</p>;
+    let invalidWarning = null;
+    if (this.state.error) {
+      invalidWarning = <div className="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Invalid Login!</strong> Please Try Again.
+        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>;
     }
     return (
       <>
         <Header header={this.props.purpose} />
         <div className='container '>
           <div className='row d-flex justify-content-center'>
+            <div className='col-10 d-flex justify-content-center col-lg-8'>
+            {invalidWarning}
+            </div>
             <div className='col-10 d-flex justify-content-center col-lg-8' style={{ backgroundColor: '#F5FCFF', borderRadius: '25px' }}>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group mt-3">

@@ -21,6 +21,7 @@ export default class App extends React.Component {
       isAuthorizing: true,
       route: parseRoute(window.location.hash)
     };
+    this.handleSignIn = this.handleSignIn.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +33,12 @@ export default class App extends React.Component {
     const token = window.localStorage.getItem('buddy-access-jwt');
     const user = token ? decodeToken(token) : null;
     this.setState({ user, isAuthorizing: false });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('buddy-access-jwt', token);
+    this.setState({ user });
   }
 
   renderPage() {
@@ -61,7 +68,7 @@ export default class App extends React.Component {
       return <Register user={this.state.user} />;
     }
     if (route.path === 'sign-in') {
-      return <SignIn user={this.state.user} />;
+      return <SignIn user={this.state.user} sign={this.handleSignIn} />;
     }
     return <NotFound />;
   }
