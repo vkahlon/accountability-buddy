@@ -72,7 +72,7 @@ app.get('/api/user/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/calorie/add-Meal', (req, res, next) => {
+app.post('/api/calorie/add-Meal/:userId', (req, res, next) => {
   const { item, calories, userId } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: name: ${item}, value: ${calories} are required fields`);
@@ -97,7 +97,7 @@ app.post('/api/calorie/add-Meal', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.post('/api/calorie/add-Exercise', (req, res, next) => {
+app.post('/api/calorie/add-Exercise/:userId', (req, res, next) => {
   const { item, calories, userId } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
@@ -115,7 +115,7 @@ app.post('/api/calorie/add-Exercise', (req, res, next) => {
     .then(result => {
       const [newExercise] = result.rows;
       if (!newExercise) {
-        throw new ClientError(404, 'cannot find user with userId of 1');
+        throw new ClientError(404, `cannot find user with userId of ${userId}`);
       } else {
         res.json(newExercise);
       }

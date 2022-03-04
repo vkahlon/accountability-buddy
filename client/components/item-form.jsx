@@ -32,7 +32,7 @@ export default class ItemForm extends React.Component {
       },
       body: JSON.stringify(this.state)
     };
-    fetch(`/api/calorie/add-${action}`, req)
+    fetch(`/api/calorie/add-${action}/${this.props.userId}`, req)
       .then(res => res.json())
       .then(result => {
         this.setState({ results: result, loading: false });
