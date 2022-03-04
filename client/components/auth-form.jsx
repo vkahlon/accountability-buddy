@@ -13,6 +13,12 @@ export default class AuthForm extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(guest, fakePassword) {
+    this.setState({ userName: guest, password: fakePassword });
+    this.handleSubmit();
   }
 
   handleChange(event) {
@@ -23,7 +29,7 @@ export default class AuthForm extends React.Component {
   handleSubmit(event) {
     this.setState({ loading: true });
     const action = this.props.purpose;
-    event.preventDefault();
+    if (event !== undefined) event.preventDefault();
     const req = {
       method: 'POST',
       headers: {
@@ -35,10 +41,21 @@ export default class AuthForm extends React.Component {
       .then(res => res.json())
       .then(result => {
         this.setState({ results: result, loading: false });
+        if (this.props.purpose === 'Sign-In') {
+          window.localStorage.setItem('buddy-access-jwt', result.token);
+        }
       });
   }
 
   render() {
+    let guest = null;
+    if (this.props.purpose === 'Sign-In') {
+      guest = <div className="row d-flex justify-content-center mt-4">
+        <div className="col-8 d-flex justify-content-center col-lg-4">
+          <a onClick={() => { this.handleClick('Guest', 'password'); }}className="mr-3">Sign-In as Guest</a>
+        </div>
+      </div>;
+    }
     if (this.state.loading === true) {
       return (
         <>
@@ -101,6 +118,7 @@ export default class AuthForm extends React.Component {
             </div>
           </div>
         </div>
+        {guest}
       </>
     );
   }

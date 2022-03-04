@@ -1,10 +1,10 @@
 import React from 'react';
-import Navbar from '../components/navbar';
 import EditItem from '../components/edit-item';
+import Redirect from '../components/redirect';
 export default function EditExercise(props) {
+  if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar />
       <EditItem purpose={'Exercise'} status={'Edit Exercises'} />
     </>
   );

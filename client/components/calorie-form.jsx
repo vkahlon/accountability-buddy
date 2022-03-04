@@ -12,7 +12,8 @@ export default class CalorieForm extends React.Component {
       weight: '',
       height: '',
       age: '',
-      results: ''
+      results: '',
+      userId: this.props.userId
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);

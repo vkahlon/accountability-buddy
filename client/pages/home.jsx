@@ -1,9 +1,7 @@
 import React from 'react';
-import Navbar from '../components/navbar';
 export default function Home(props) {
   return (
     <>
-    <Navbar />
     <div className='container-lg'>
         <div className='row'>
         <div className='col-5 col-lg-5 d-flex justify-content-end'>

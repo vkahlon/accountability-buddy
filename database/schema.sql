@@ -1,3 +1,11 @@
+set
+  client_min_messages to warning;
+
+-- `drop schema` INSTANTLY ERASES EVERYTHING.
+drop schema "public" cascade;
+
+create schema "public";
+
 CREATE TABLE "public"."users" (
 	"userId" serial,
 	"userName" text NOT NULL,

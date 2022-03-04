@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from '../components/navbar';
 import CalorieForm from '../components/calorie-form';
+import Redirect from '../components/redirect';
 export default function Calculator(props) {
+  if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar />
-      <CalorieForm />
+      <CalorieForm userId={props.user.userId} />
     </>
   );
 }

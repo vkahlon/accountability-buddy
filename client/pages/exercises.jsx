@@ -1,10 +1,10 @@
 import React from 'react';
-import Navbar from '../components/navbar';
 import ItemForm from '../components/item-form';
+import Redirect from '../components/redirect';
 export default function Exercises(props) {
+  if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar />
       <ItemForm purpose={'Exercise'} status={'Add an Exercise'} />
     </>
   );
