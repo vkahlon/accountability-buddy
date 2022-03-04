@@ -10,19 +10,19 @@ export default class UserInfo extends React.Component {
   componentDidMount() {
     let mealList = null;
     let exerciseList = null;
-    fetch('api/meals')
+    fetch(`api/meals/${this.props.userId}`)
       .then(response => response.json())
       .then(data => {
         mealList = data;
       })
       .then(meal => {
-        fetch('api/exercises')
+        fetch(`api/exercises/${this.props.userId}`)
           .then(response => response.json())
           .then(data => {
             exerciseList = data;
           })
           .then(exercise => {
-            fetch('api/user')
+            fetch(`api/user/${this.props.userId}`)
               .then(response => response.json())
               .then(data => {
                 const calorie = data;

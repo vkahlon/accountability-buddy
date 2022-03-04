@@ -5,7 +5,7 @@ export default function EditExercise(props) {
   if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <EditItem purpose={'Exercise'} status={'Edit Exercises'} />
+      <EditItem userId={props.user.userId} purpose={'Exercise'} status={'Edit Exercises'} />
     </>
   );
 }

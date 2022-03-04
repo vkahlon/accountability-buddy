@@ -5,7 +5,7 @@ export default function Exercises(props) {
   if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <ItemForm purpose={'Exercise'} status={'Add an Exercise'} />
+      <ItemForm userId={props.user.userId} purpose={'Exercise'} status={'Add an Exercise'} />
     </>
   );
 }

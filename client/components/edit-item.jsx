@@ -27,7 +27,7 @@ export default class EditItem extends React.Component {
       },
       body: JSON.stringify(this.state)
     };
-    fetch(`/api/delete-${action}/${id}`, req)
+    fetch(`/api/delete-${action}/${id}/${this.props.userId}`, req)
       .then(res => res.json())
       .then(data => {
         const [deletedItem] = data;
@@ -53,7 +53,7 @@ export default class EditItem extends React.Component {
 
   componentDidMount() {
     const purpose = this.props.purpose;
-    fetch(`/api/edit-${purpose}-items`)
+    fetch(`/api/edit-${purpose}-items/${this.props.userId}`)
       .then(res => res.json())
       .then(result => {
         const newState = { retrieving: false, data: result };
@@ -136,7 +136,7 @@ export default class EditItem extends React.Component {
     } else if (this.state.objective === 'edit') {
       return (
             <>
-              <EditForm item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
+              <EditForm userId={this.props.userId} item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
             </>
       );
     } else if (this.state.objective === 'deleted') {

@@ -17,12 +17,15 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
-app.get('/api/meals', (req, res, next) => {
+app.get('/api/meals/:userId', (req, res, next) => {
+  const { userId } = req.params;
   const sql = `
     select *
       from "meals"
+    where "userId" = $1
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       const mealList = [];
       const mealData = result.rows;
@@ -34,12 +37,15 @@ app.get('/api/meals', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/exercises', (req, res, next) => {
+app.get('/api/exercises/:userId', (req, res, next) => {
+  const { userId } = req.params;
   const sql = `
     select *
       from "exercises"
+    where "userId" = $1
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       const exerciseList = [];
       const exerciseData = result.rows;
@@ -51,12 +57,15 @@ app.get('/api/exercises', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/user', (req, res, next) => {
+app.get('/api/user/:userId', (req, res, next) => {
+  const { userId } = req.params;
   const sql = `
     select "dailyCalorie"
       from "users"
+    where "userId" = $1
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       res.json(result.rows);
     })
@@ -64,7 +73,7 @@ app.get('/api/user', (req, res, next) => {
 });
 
 app.post('/api/calorie/add-Meal', (req, res, next) => {
-  const { item, calories } = req.body;
+  const { item, calories, userId } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: name: ${item}, value: ${calories} are required fields`);
   }
@@ -72,11 +81,11 @@ app.post('/api/calorie/add-Meal', (req, res, next) => {
     throw new ClientError(400, `Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
   }
   const sql = `
-        insert into "meals" ("mealName", "calories")
-        values ($1, $2)
+        insert into "meals" ("mealName", "calories", "userId")
+        values ($1, $2, $3)
         returning *
       `;
-  const params = [item, calories];
+  const params = [item, calories, userId];
   db.query(sql, params)
     .then(result => {
       const [newMeal] = result.rows;
@@ -89,7 +98,7 @@ app.post('/api/calorie/add-Meal', (req, res, next) => {
     .catch(err => next(err));
 });
 app.post('/api/calorie/add-Exercise', (req, res, next) => {
-  const { item, calories } = req.body;
+  const { item, calories, userId } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
   }
@@ -97,11 +106,11 @@ app.post('/api/calorie/add-Exercise', (req, res, next) => {
     throw new ClientError(400, `Exercise name must be under 20 characters. Value must be under 6 digits. Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
   }
   const sql = `
-        insert into "exercises" ("exerciseName", "calories")
-        values ($1, $2)
+        insert into "exercises" ("exerciseName", "calories", "userId")
+        values ($1, $2, $3)
         returning *
       `;
-  const params = [item, calories];
+  const params = [item, calories, userId];
   db.query(sql, params)
     .then(result => {
       const [newExercise] = result.rows;
@@ -113,8 +122,8 @@ app.post('/api/calorie/add-Exercise', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.put('/api/calorie/edit-Exercise/:exerciseId', (req, res, next) => {
-  const exerciseId = Number(req.params.exerciseId);
+app.put('/api/calorie/edit-Exercise/:exerciseId/:userId', (req, res, next) => {
+  const { userId, exerciseId } = req.params;
   const { item, calories } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
@@ -126,10 +135,10 @@ app.put('/api/calorie/edit-Exercise/:exerciseId', (req, res, next) => {
         update "exercises"
         set "exerciseName" = $1,
             "calories" = $2
-        where "exerciseId" = $3
+        where "exerciseId" = $3 AND "userId" = $4
         RETURNING *
       `;
-  const params = [item, calories, exerciseId];
+  const params = [item, calories, exerciseId, userId];
   db.query(sql, params)
     .then(result => {
       const [newExercise] = result.rows;
@@ -141,8 +150,8 @@ app.put('/api/calorie/edit-Exercise/:exerciseId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.put('/api/calorie/edit-Meal/:mealId', (req, res, next) => {
-  const mealId = Number(req.params.mealId);
+app.put('/api/calorie/edit-Meal/:mealId/:userId', (req, res, next) => {
+  const { userId, mealId } = req.params;
   const { item, calories } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: meal: ${item}, value: ${calories} are required fields`);
@@ -154,10 +163,10 @@ app.put('/api/calorie/edit-Meal/:mealId', (req, res, next) => {
         update "meals"
         set "mealName" = $1,
             "calories" = $2
-        where "mealId" = $3
+        where "mealId" = $3 AND "userId" = $4
         RETURNING *
       `;
-  const params = [item, calories, mealId];
+  const params = [item, calories, mealId, userId];
   db.query(sql, params)
     .then(result => {
       const [newMeal] = result.rows;
@@ -170,12 +179,15 @@ app.put('/api/calorie/edit-Meal/:mealId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/edit-Meal-items', (req, res, next) => {
+app.get('/api/edit-Meal-items/:userId', (req, res, next) => {
+  const { userId } = req.params;
   const sql = `
     select *
       from "meals"
+      where "userId" = $1
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       const mealList = [];
       const mealData = result.rows;
@@ -186,12 +198,15 @@ app.get('/api/edit-Meal-items', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/edit-Exercise-items', (req, res, next) => {
+app.get('/api/edit-Exercise-items/:userId', (req, res, next) => {
+  const { userId } = req.params;
   const sql = `
     select *
       from "exercises"
+      where "userId" = $1
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       const exerciseList = [];
       const exerciseData = result.rows;
@@ -203,28 +218,28 @@ app.get('/api/edit-Exercise-items', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/delete-Exercise/:exerciseId', (req, res, next) => {
-  const exerciseId = Number(req.params.exerciseId);
+app.delete('/api/delete-Exercise/:exerciseId/:userId', (req, res, next) => {
+  const { userId, exerciseId } = req.params;
   const sql = `
      delete from "exercises"
-     where "exerciseId" = $1
+     where "exerciseId" = $1 AND "userId" = $2
      returning *
    `;
-  const params = [exerciseId];
+  const params = [exerciseId, userId];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);
     })
     .catch(err => next(err));
 });
-app.delete('/api/delete-Meal/:mealId', (req, res, next) => {
-  const mealId = Number(req.params.mealId);
+app.delete('/api/delete-Meal/:mealId/:userId', (req, res, next) => {
+  const { userId, mealId } = req.params;
   const sql = `
      delete from "meals"
-     where "mealId" = $1
+     where "mealId" = $1 AND "userId" = $2
      returning *
    `;
-  const params = [mealId];
+  const params = [mealId, userId];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);
@@ -233,7 +248,7 @@ app.delete('/api/delete-Meal/:mealId', (req, res, next) => {
 });
 
 app.put('/api/calorie/get-calorie', (req, res, next) => {
-  let { age, weight, height, goal, level, gender, metric } = req.body;
+  let { age, weight, height, goal, level, gender, metric, userId } = req.body;
   if (!age || !weight || !height || !goal || !level || !gender || typeof metric === 'undefined') {
     throw new ClientError(400, `Condition 1: age: ${age}, weight: ${weight}, height: ${height}, goal: ${goal}, level: ${level}, metric: ${metric} and gender: ${gender} are required fields`);
   }
@@ -274,10 +289,10 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
   const sql = `
         update "users"
         set "dailyCalorie" = $1
-        where "userId" = 2
+        where "userId" = $2
         returning *
       `;
-  const params = [bmr];
+  const params = [bmr, userId];
   db.query(sql, params)
     .then(result => {
       const [updatedCalorie] = result.rows;

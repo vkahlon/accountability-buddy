@@ -9,7 +9,8 @@ export default class ItemForm extends React.Component {
       loading: false,
       results: '',
       calories: '',
-      item: ''
+      item: '',
+      userId: this.props.userId
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

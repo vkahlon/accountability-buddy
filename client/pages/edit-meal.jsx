@@ -5,7 +5,7 @@ export default function EditMeal(props) {
   if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <EditItem purpose={'Meal'} status={'Edit Meals'}/>
+      <EditItem userId={props.user.userId} purpose={'Meal'} status={'Edit Meals'}/>
     </>
   );
 }

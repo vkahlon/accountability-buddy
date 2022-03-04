@@ -7,7 +7,7 @@ export default function Codex(props) {
   return (
     <>
       <Header header={'Fitness Codex'} />
-      <UserInfo/>
+      <UserInfo userId={props.user.userId}/>
     </>
   );
 }

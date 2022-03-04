@@ -5,7 +5,7 @@ export default function Meals(props) {
   if (!props.user) return <Redirect to="#sign-in" />;
   return (
     <>
-      <ItemForm purpose={'Meal'} status={'Add a Meal'} />
+      <ItemForm userId={props.user.userId} purpose={'Meal'} status={'Add a Meal'} />
     </>
   );
 }
