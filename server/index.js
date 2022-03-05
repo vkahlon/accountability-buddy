@@ -136,7 +136,8 @@ app.get('/api/user/:userId', (req, res, next) => {
 });
 
 app.post('/api/calorie/add-Meal', (req, res, next) => {
-  const { item, calories, userId } = req.body;
+  const { item, calories } = req.body;
+  const { userId } = req.user;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: name: ${item}, value: ${calories} are required fields`);
   }
@@ -161,12 +162,13 @@ app.post('/api/calorie/add-Meal', (req, res, next) => {
     .catch(err => next(err));
 });
 app.post('/api/calorie/add-Exercise', (req, res, next) => {
-  const { item, calories, userId } = req.body;
+  const { item, calories } = req.body;
+  const { userId } = req.user;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
   }
   if ((item.length > 20) || (calories.toString().length > 5)) {
-    throw new ClientError(400, `Exercise name must be under 20 characters. Value must be under 6 digits. Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
+    throw new ClientError(400, `Exercise name must be under 15 characters. Value must be under 6 digits. Your input ${item.length} characters. Your input ${calories.toString().length} characters.`);
   }
   const sql = `
         insert into "exercises" ("exerciseName", "calories", "userId")

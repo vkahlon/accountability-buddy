@@ -32,7 +32,7 @@ export default class App extends React.Component {
     });
     const token = window.localStorage.getItem('buddy-access-jwt');
     const user = token ? decodeToken(token) : 'undefined';
-    this.setState({ user, isAuthorizing: false, token: token });
+    this.setState({ user, isAuthorizing: false, token });
   }
 
   handleSignIn(result) {
@@ -47,22 +47,22 @@ export default class App extends React.Component {
       return <Home user={this.state.user} />;
     }
     if (route.path === 'calculator') {
-      return <Calculator user={this.state.user} />;
+      return <Calculator user={this.state.user} token={this.state.token} />;
     }
     if (route.path === 'meals') {
-      return <Meals user={this.state.user} />;
+      return <Meals user={this.state.user} token={this.state.token} />;
     }
     if (route.path === 'exercises') {
-      return <Exercises user={this.state.user} />;
+      return <Exercises user={this.state.user} token={this.state.token} />;
     }
     if (route.path === 'codex') {
-      return <Codex user={this.state.user} />;
+      return <Codex user={this.state.user} token={this.state.token} />;
     }
     if (route.path === 'edit-meal') {
-      return <EditMeal user={this.state.user} />;
+      return <EditMeal user={this.state.user} token={this.state.token} />;
     }
     if (route.path === 'edit-exercise') {
-      return <EditExercise user={this.state.user} />;
+      return <EditExercise user={this.state.user} token={this.state.token} />;
     }
     if (route.path === 'register') {
       return <Register user={this.state.user} />;
