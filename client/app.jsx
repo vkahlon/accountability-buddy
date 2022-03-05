@@ -44,31 +44,31 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      return <Home user={this.state.user} />;
+      return <Home token={this.state.token} />;
     }
     if (route.path === 'calculator') {
-      return <Calculator user={this.state.user} token={this.state.token} />;
+      return <Calculator token={this.state.token} />;
     }
     if (route.path === 'meals') {
-      return <Meals user={this.state.user} token={this.state.token} />;
+      return <Meals token={this.state.token} />;
     }
     if (route.path === 'exercises') {
-      return <Exercises user={this.state.user} token={this.state.token} />;
+      return <Exercises token={this.state.token} />;
     }
     if (route.path === 'codex') {
-      return <Codex user={this.state.user} token={this.state.token} />;
+      return <Codex token={this.state.token} />;
     }
     if (route.path === 'edit-meal') {
-      return <EditMeal user={this.state.user} token={this.state.token} />;
+      return <EditMeal token={this.state.token} />;
     }
     if (route.path === 'edit-exercise') {
-      return <EditExercise user={this.state.user} token={this.state.token} />;
+      return <EditExercise token={this.state.token} />;
     }
     if (route.path === 'register') {
-      return <Register user={this.state.user} />;
+      return <Register token={this.state.token} />;
     }
     if (route.path === 'sign-in') {
-      return <SignIn user={this.state.user} sign={this.handleSignIn} />;
+      return <SignIn token={this.state.token} sign={this.handleSignIn} />;
     }
     return <NotFound />;
   }

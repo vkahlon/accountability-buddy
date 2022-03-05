@@ -27,11 +27,12 @@ export default class EditForm extends React.Component {
     const req = {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
       },
       body: JSON.stringify(this.state)
     };
-    fetch(`/api/calorie/edit-${action}/${id}/${this.props.user.userId}`, req)
+    fetch(`/api/calorie/edit-${action}/${id}`, req)
       .then(res => res.json())
       .then(data => {
         this.setState({ results: data, stage: 1 });
@@ -50,7 +51,7 @@ export default class EditForm extends React.Component {
     if (this.state.stage === 2) {
       return (
         <>
-          <EditItem user={this.props.user} purpose={this.props.purpose} status={`${this.props.status}s`} />
+          <EditItem token={this.props.token} user={this.props.user} purpose={this.props.purpose} status={`${this.props.status}s`} />
         </>
       );
     }

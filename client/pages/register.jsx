@@ -3,10 +3,10 @@ import Auth from '../components/auth-form';
 import Navbar from '../components/navbar';
 export default function Register(props) {
   let navDefault;
-  if (typeof props.user.userId !== 'undefined') navDefault = props.user.userId;
+  if (typeof props.token !== 'undefined') navDefault = props.token;
   return (
     <>
-      <Navbar userId={navDefault} />
+      <Navbar token={navDefault} />
       <Auth purpose={'Register'} />
     </>
   );

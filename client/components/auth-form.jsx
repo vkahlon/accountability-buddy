@@ -116,6 +116,7 @@ export default class AuthForm extends React.Component {
       return (
         <>
           < Redirect to='#'/>
+          {window.location.reload()}
         </>
       );
     }

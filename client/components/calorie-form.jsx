@@ -12,8 +12,7 @@ export default class CalorieForm extends React.Component {
       weight: '',
       height: '',
       age: '',
-      results: '',
-      userId: this.props.userId
+      results: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -32,7 +31,8 @@ export default class CalorieForm extends React.Component {
     const req = {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
       },
       body: JSON.stringify(this.state)
     };

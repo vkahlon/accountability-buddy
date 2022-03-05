@@ -80,8 +80,8 @@ app.post('/api/auth/Sign-In', (req, res, next) => {
     .catch(err => next(err));
 });
 app.use(authorizationMiddleware);
-app.get('/api/meals/:userId', (req, res, next) => {
-  const { userId } = req.params;
+app.get('/api/meals', (req, res, next) => {
+  const { userId } = req.user;
   const sql = `
     select *
       from "meals"
@@ -100,8 +100,8 @@ app.get('/api/meals/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/exercises/:userId', (req, res, next) => {
-  const { userId } = req.params;
+app.get('/api/exercises', (req, res, next) => {
+  const { userId } = req.user;
   const sql = `
     select *
       from "exercises"
@@ -120,8 +120,8 @@ app.get('/api/exercises/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/user/:userId', (req, res, next) => {
-  const { userId } = req.params;
+app.get('/api/user', (req, res, next) => {
+  const { userId } = req.user;
   const sql = `
     select "dailyCalorie"
       from "users"
@@ -187,9 +187,10 @@ app.post('/api/calorie/add-Exercise', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.put('/api/calorie/edit-Exercise/:exerciseId/:userId', (req, res, next) => {
-  const { userId, exerciseId } = req.params;
+app.put('/api/calorie/edit-Exercise/:exerciseId', (req, res, next) => {
+  const { exerciseId } = req.params;
   const { item, calories } = req.body;
+  const { userId } = req.user;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
   }
@@ -215,9 +216,10 @@ app.put('/api/calorie/edit-Exercise/:exerciseId/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.put('/api/calorie/edit-Meal/:mealId/:userId', (req, res, next) => {
-  const { userId, mealId } = req.params;
+app.put('/api/calorie/edit-Meal/:mealId', (req, res, next) => {
+  const { mealId } = req.params;
   const { item, calories } = req.body;
+  const { userId } = req.user;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: meal: ${item}, value: ${calories} are required fields`);
   }
@@ -244,8 +246,8 @@ app.put('/api/calorie/edit-Meal/:mealId/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/edit-Meal-items/:userId', (req, res, next) => {
-  const { userId } = req.params;
+app.get('/api/edit-Meal-items', (req, res, next) => {
+  const { userId } = req.user;
   const sql = `
     select *
       from "meals"
@@ -263,8 +265,8 @@ app.get('/api/edit-Meal-items/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.get('/api/edit-Exercise-items/:userId', (req, res, next) => {
-  const { userId } = req.params;
+app.get('/api/edit-Exercise-items', (req, res, next) => {
+  const { userId } = req.user;
   const sql = `
     select *
       from "exercises"
@@ -283,8 +285,9 @@ app.get('/api/edit-Exercise-items/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/delete-Exercise/:exerciseId/:userId', (req, res, next) => {
-  const { userId, exerciseId } = req.params;
+app.delete('/api/delete-Exercise/:exerciseId', (req, res, next) => {
+  const { exerciseId } = req.params;
+  const { userId } = req.user;
   const sql = `
      delete from "exercises"
      where "exerciseId" = $1 AND "userId" = $2
@@ -297,8 +300,9 @@ app.delete('/api/delete-Exercise/:exerciseId/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.delete('/api/delete-Meal/:mealId/:userId', (req, res, next) => {
-  const { userId, mealId } = req.params;
+app.delete('/api/delete-Meal/:mealId', (req, res, next) => {
+  const { mealId } = req.params;
+  const { userId } = req.user;
   const sql = `
      delete from "meals"
      where "mealId" = $1 AND "userId" = $2
@@ -313,7 +317,8 @@ app.delete('/api/delete-Meal/:mealId/:userId', (req, res, next) => {
 });
 
 app.put('/api/calorie/get-calorie', (req, res, next) => {
-  let { age, weight, height, goal, level, gender, metric, userId } = req.body;
+  let { age, weight, height, goal, level, gender, metric } = req.body;
+  const { userId } = req.user;
   if (!age || !weight || !height || !goal || !level || !gender || typeof metric === 'undefined') {
     throw new ClientError(400, `Condition 1: age: ${age}, weight: ${weight}, height: ${height}, goal: ${goal}, level: ${level}, metric: ${metric} and gender: ${gender} are required fields`);
   }

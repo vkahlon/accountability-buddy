@@ -3,11 +3,11 @@ import EditItem from '../components/edit-item';
 import Redirect from '../components/redirect';
 import Navbar from '../components/navbar';
 export default function EditExercise(props) {
-  if (props.user === 'undefined') return <Redirect to="#sign-in" />;
+  if (props.token === 'undefined') return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar userId={props.user.userId} />
-      <EditItem user={props.user} purpose={'Exercise'} status={'Edit Exercises'} />
+      <Navbar token={props.token} />
+      <EditItem token={props.token} purpose={'Exercise'} status={'Edit Exercises'} />
     </>
   );
 }
