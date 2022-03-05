@@ -7,7 +7,7 @@ export default function Meals(props) {
   return (
     <>
       <Navbar userId={props.user.userId} />
-      <ItemForm userId={props.user.userId} purpose={'Meal'} status={'Add a Meal'} />
+      <ItemForm user={props.user} purpose={'Meal'} status={'Add a Meal'} />
     </>
   );
 }

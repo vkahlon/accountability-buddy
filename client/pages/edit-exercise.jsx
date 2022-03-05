@@ -7,7 +7,7 @@ export default function EditExercise(props) {
   return (
     <>
       <Navbar userId={props.user.userId} />
-      <EditItem userId={props.user.userId} purpose={'Exercise'} status={'Edit Exercises'} />
+      <EditItem user={props.user} purpose={'Exercise'} status={'Edit Exercises'} />
     </>
   );
 }

@@ -18,6 +18,7 @@ export default class App extends React.Component {
     this.state = {
       user: null,
       isAuthorizing: true,
+      token: 'undefined',
       route: parseRoute(window.location.hash)
     };
     this.handleSignIn = this.handleSignIn.bind(this);
@@ -31,7 +32,7 @@ export default class App extends React.Component {
     });
     const token = window.localStorage.getItem('buddy-access-jwt');
     const user = token ? decodeToken(token) : 'undefined';
-    this.setState({ user, isAuthorizing: false });
+    this.setState({ user, isAuthorizing: false, token: token });
   }
 
   handleSignIn(result) {

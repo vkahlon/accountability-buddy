@@ -9,8 +9,7 @@ export default class ItemForm extends React.Component {
       loading: false,
       results: '',
       calories: '',
-      item: '',
-      userId: this.props.userId
+      item: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,9 +29,10 @@ export default class ItemForm extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state)
+      body: JSON.stringify(this.state),
+      userId: this.props.user.userId
     };
-    fetch(`/api/calorie/add-${action}/${this.props.userId}`, req)
+    fetch(`/api/calorie/add-${action}`, req)
       .then(res => res.json())
       .then(result => {
         this.setState({ results: result, loading: false });

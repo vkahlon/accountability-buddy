@@ -7,7 +7,7 @@ export default function EditMeal(props) {
   return (
     <>
       <Navbar userId={props.user.userId} />
-      <EditItem userId={props.user.userId} purpose={'Meal'} status={'Edit Meals'}/>
+      <EditItem user={props.user} purpose={'Meal'} status={'Edit Meals'}/>
     </>
   );
 }

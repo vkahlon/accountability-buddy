@@ -4,6 +4,7 @@ const pg = require('pg');
 const argon2 = require('argon2');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
+const authorizationMiddleware = require('./authorization-middleware');
 const ClientError = require('./client-error');
 const jwt = require('jsonwebtoken');
 
@@ -17,6 +18,68 @@ const db = new pg.Pool({
 });
 app.use(jsonMiddleware);
 
+app.post('/api/auth/Register', (req, res, next) => {
+  const { userName, password } = req.body;
+  const standardCalorie = 2000;
+  if (!userName || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  if (password.length < 8) {
+    throw new ClientError(400, `Password must be greater than 8 characters. Your password length ${password.length}`);
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+    insert into "users" ("userName", "dailyCalorie", "hashedPassword")
+    values ($1, $2, $3)
+    returning "userId", "userName", "dailyCalorie"
+  `;
+      const params = [userName, standardCalorie, hashedPassword];
+      db.query(sql, params)
+        .then(result => {
+          const [newUser] = result.rows;
+          newUser.purpose = 'Register';
+          res.status(201).json(newUser);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/auth/Sign-In', (req, res, next) => {
+  const { userName, password } = req.body;
+  if (!userName || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+    select "userId",
+           "hashedPassword"
+      from "users"
+     where "userName" = $1
+  `;
+  const params = [userName];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid login');
+      }
+      const { userId, hashedPassword } = user;
+      return argon2
+        .verify(hashedPassword, password)
+        .then(isMatching => {
+          if (!isMatching) {
+            throw new ClientError(401, 'invalid login');
+          }
+          const payload = { userId, userName };
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+          res.json({ token, user: payload });
+        });
+    })
+    .catch(err => next(err));
+});
+app.use(authorizationMiddleware);
 app.get('/api/meals/:userId', (req, res, next) => {
   const { userId } = req.params;
   const sql = `
@@ -72,7 +135,7 @@ app.get('/api/user/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/calorie/add-Meal/:userId', (req, res, next) => {
+app.post('/api/calorie/add-Meal', (req, res, next) => {
   const { item, calories, userId } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: name: ${item}, value: ${calories} are required fields`);
@@ -97,7 +160,7 @@ app.post('/api/calorie/add-Meal/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-app.post('/api/calorie/add-Exercise/:userId', (req, res, next) => {
+app.post('/api/calorie/add-Exercise', (req, res, next) => {
   const { item, calories, userId } = req.body;
   if (!item || !calories) {
     throw new ClientError(400, `Condition 1: exercise: ${item}, value: ${calories} are required fields`);
@@ -301,67 +364,6 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
       } else {
         res.json(updatedCalorie);
       }
-    })
-    .catch(err => next(err));
-});
-app.post('/api/auth/Register', (req, res, next) => {
-  const { userName, password } = req.body;
-  const standardCalorie = 2000;
-  if (!userName || !password) {
-    throw new ClientError(400, 'username and password are required fields');
-  }
-  if (password.length < 8) {
-    throw new ClientError(400, `Password must be greater than 8 characters. Your password length ${password.length}`);
-  }
-  argon2
-    .hash(password)
-    .then(hashedPassword => {
-      const sql = `
-    insert into "users" ("userName", "dailyCalorie", "hashedPassword")
-    values ($1, $2, $3)
-    returning "userId", "userName", "dailyCalorie"
-  `;
-      const params = [userName, standardCalorie, hashedPassword];
-      db.query(sql, params)
-        .then(result => {
-          const [newUser] = result.rows;
-          newUser.purpose = 'Register';
-          res.status(201).json(newUser);
-        })
-        .catch(err => next(err));
-    })
-    .catch(err => next(err));
-});
-
-app.post('/api/auth/Sign-In', (req, res, next) => {
-  const { userName, password } = req.body;
-  if (!userName || !password) {
-    throw new ClientError(401, 'invalid login');
-  }
-  const sql = `
-    select "userId",
-           "hashedPassword"
-      from "users"
-     where "userName" = $1
-  `;
-  const params = [userName];
-  db.query(sql, params)
-    .then(result => {
-      const [user] = result.rows;
-      if (!user) {
-        throw new ClientError(401, 'invalid login');
-      }
-      const { userId, hashedPassword } = user;
-      return argon2
-        .verify(hashedPassword, password)
-        .then(isMatching => {
-          if (!isMatching) {
-            throw new ClientError(401, 'invalid login');
-          }
-          const payload = { userId, userName };
-          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-          res.json({ token, user: payload });
-        });
     })
     .catch(err => next(err));
 });

@@ -7,7 +7,7 @@ export default function Exercises(props) {
   return (
     <>
       <Navbar userId={props.user.userId} />
-      <ItemForm userId={props.user.userId} purpose={'Exercise'} status={'Add an Exercise'} />
+      <ItemForm user={props.user} purpose={'Exercise'} status={'Add an Exercise'} />
     </>
   );
 }

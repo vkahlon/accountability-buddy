@@ -31,7 +31,7 @@ export default class EditForm extends React.Component {
       },
       body: JSON.stringify(this.state)
     };
-    fetch(`/api/calorie/edit-${action}/${id}/${this.props.userId}`, req)
+    fetch(`/api/calorie/edit-${action}/${id}/${this.props.user.userId}`, req)
       .then(res => res.json())
       .then(data => {
         this.setState({ results: data, stage: 1 });
@@ -50,7 +50,7 @@ export default class EditForm extends React.Component {
     if (this.state.stage === 2) {
       return (
         <>
-          <EditItem userId={this.props.userId} purpose={this.props.purpose} status={`${this.props.status}s`} />
+          <EditItem user={this.props.user} purpose={this.props.purpose} status={`${this.props.status}s`} />
         </>
       );
     }
