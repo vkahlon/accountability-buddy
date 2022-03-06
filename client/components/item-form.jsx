@@ -27,9 +27,11 @@ export default class ItemForm extends React.Component {
     const req = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
       },
-      body: JSON.stringify(this.state)
+      body: JSON.stringify(this.state),
+      token: this.props.token
     };
     fetch(`/api/calorie/add-${action}`, req)
       .then(res => res.json())

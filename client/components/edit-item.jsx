@@ -23,7 +23,8 @@ export default class EditItem extends React.Component {
     const req = {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
       },
       body: JSON.stringify(this.state)
     };
@@ -53,7 +54,14 @@ export default class EditItem extends React.Component {
 
   componentDidMount() {
     const purpose = this.props.purpose;
-    fetch(`/api/edit-${purpose}-items`)
+    const req = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
+      }
+    };
+    fetch(`/api/edit-${purpose}-items`, req)
       .then(res => res.json())
       .then(result => {
         const newState = { retrieving: false, data: result };
@@ -136,7 +144,7 @@ export default class EditItem extends React.Component {
     } else if (this.state.objective === 'edit') {
       return (
             <>
-              <EditForm item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
+              <EditForm token={this.props.token} user={this.props.user} item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
             </>
       );
     } else if (this.state.objective === 'deleted') {

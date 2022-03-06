@@ -1,11 +1,13 @@
 import React from 'react';
-import Navbar from '../components/navbar';
 import ItemForm from '../components/item-form';
+import Redirect from '../components/redirect';
+import Navbar from '../components/navbar';
 export default function Meals(props) {
+  if (props.token === 'undefined') return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar />
-      <ItemForm purpose={'Meal'} status={'Add a Meal'} />
+      <Navbar token={props.token} />
+      <ItemForm token={props.token} purpose={'Meal'} status={'Add a Meal'} />
     </>
   );
 }

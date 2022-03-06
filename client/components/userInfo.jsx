@@ -10,19 +10,26 @@ export default class UserInfo extends React.Component {
   componentDidMount() {
     let mealList = null;
     let exerciseList = null;
-    fetch('api/meals')
+    const req = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
+      }
+    };
+    fetch('api/meals', req)
       .then(response => response.json())
       .then(data => {
         mealList = data;
       })
       .then(meal => {
-        fetch('api/exercises')
+        fetch('api/exercises', req)
           .then(response => response.json())
           .then(data => {
             exerciseList = data;
           })
           .then(exercise => {
-            fetch('api/user')
+            fetch('api/user', req)
               .then(response => response.json())
               .then(data => {
                 const calorie = data;

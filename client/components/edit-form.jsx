@@ -27,7 +27,8 @@ export default class EditForm extends React.Component {
     const req = {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Access-Token': `${this.props.token}`
       },
       body: JSON.stringify(this.state)
     };
@@ -50,7 +51,7 @@ export default class EditForm extends React.Component {
     if (this.state.stage === 2) {
       return (
         <>
-          <EditItem purpose={this.props.purpose} status={`${this.props.status}s`} />
+          <EditItem token={this.props.token} user={this.props.user} purpose={this.props.purpose} status={`${this.props.status}s`} />
         </>
       );
     }
