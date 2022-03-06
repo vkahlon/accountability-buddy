@@ -6,7 +6,7 @@ export default function Calculator(props) {
   if (props.token === null) return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar token={props.token}/>
+      <Navbar onSignOut={props.out} token={props.token}/>
       <CalorieForm token={props.token} />
     </>
   );

@@ -22,6 +22,7 @@ export default class App extends React.Component {
       route: parseRoute(window.location.hash)
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -41,36 +42,42 @@ export default class App extends React.Component {
     this.setState({ user });
   }
 
+  handleSignOut() {
+    window.localStorage.removeItem('buddy-access-jwt');
+    this.setState({ user: null, route: parseRoute(window.location.hash) });
+    window.location.reload();
+  }
+
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      return <Home token={this.state.token} />;
+      return <Home out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'calculator') {
-      return <Calculator token={this.state.token} />;
+      return <Calculator out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'meals') {
-      return <Meals token={this.state.token} />;
+      return <Meals out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'exercises') {
-      return <Exercises token={this.state.token} />;
+      return <Exercises out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'codex') {
-      return <Codex token={this.state.token} />;
+      return <Codex out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'edit-meal') {
-      return <EditMeal token={this.state.token} />;
+      return <EditMeal out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'edit-exercise') {
-      return <EditExercise token={this.state.token} />;
+      return <EditExercise out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'register') {
-      return <Register token={this.state.token} />;
+      return <Register out={this.handleSignOut} token={this.state.token} />;
     }
     if (route.path === 'sign-in') {
-      return <SignIn token={this.state.token} sign={this.handleSignIn} />;
+      return <SignIn out={this.handleSignOut} token={this.state.token} sign={this.handleSignIn} />;
     }
-    return <NotFound />;
+    return <NotFound out={this.handleSignOut} token={this.state.token} />;
   }
 
   render() {

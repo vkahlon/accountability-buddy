@@ -5,7 +5,7 @@ export default function Home(props) {
   if (props.token !== 'undefined') navDefault = props.token;
   return (
     <>
-      <Navbar token={navDefault} />
+      <Navbar onSignOut={props.out} token={navDefault} />
     <div className='container-lg'>
         <div className='row'>
         <div className='col-5 col-lg-5 d-flex justify-content-end'>

@@ -4,10 +4,10 @@ import UserInfo from '../components/userInfo';
 import Redirect from '../components/redirect';
 import Navbar from '../components/navbar';
 export default function Codex(props) {
-  if (props.token === 'undefined') return <Redirect to="#sign-in" />;
+  if (props.token === null) return <Redirect to="#sign-in" />;
   return (
     <>
-      <Navbar token={props.token} />
+      <Navbar onSignOut={props.out} token={props.token} />
       <Header header={'Fitness Codex'} />
       <UserInfo token={props.token}/>
     </>

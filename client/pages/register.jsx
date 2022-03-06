@@ -6,7 +6,7 @@ export default function Register(props) {
   if (typeof props.token !== 'undefined') navDefault = props.token;
   return (
     <>
-      <Navbar token={navDefault} />
+      <Navbar onSignOut={props.out} token={navDefault} />
       <Auth purpose={'Register'} />
     </>
   );

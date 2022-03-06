@@ -1,7 +1,9 @@
 import React from 'react';
 export default function Navbar(props) {
+  let isSigned = <a className="nav-link mr-4" href="#sign-in" style={{ color: '#007BFF' }}>Sign In</a>;
   let featurePages = null;
   if (props.token) {
+    isSigned = <a onClick={props.onSignOut} className="nav-link mr-4" href="#" style={{ color: '#007BFF' }}>Sign Out</a>;
     featurePages = <ul className="navbar-nav mr-auto">
       <li className="nav-item active">
         <a className="nav-link" href="#calculator" style={{ color: '#007BFF' }}>Calculator</a>
@@ -36,7 +38,7 @@ export default function Navbar(props) {
           {featurePages}
           <ul className="navbar-nav d-flex justify-content-end">
             <li className="nav-item active d-flex justify-content-end">
-              <a className="nav-link mr-4" href="#sign-in" style={{ color: '#007BFF' }}>Sign In</a>
+              {isSigned}
               <a className="nav-link" href="#register" style={{ color: '#007BFF' }}>Register</a>
             </li>
           </ul>
