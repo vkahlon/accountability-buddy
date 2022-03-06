@@ -17,6 +17,7 @@ const db = new pg.Pool({
   }
 });
 app.use(jsonMiddleware);
+app.use(staticMiddleware);
 
 app.post('/api/auth/Register', (req, res, next) => {
   const { userName, password } = req.body;
@@ -374,8 +375,6 @@ app.put('/api/calorie/get-calorie', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-
-app.use(staticMiddleware);
 
 app.use(errorMiddleware);
 
