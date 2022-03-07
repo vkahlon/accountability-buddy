@@ -1,11 +1,7 @@
 import React from 'react';
-import Navbar from '../components/navbar';
 export default function Home(props) {
-  let navDefault;
-  if (props.token !== 'undefined') navDefault = props.token;
   return (
     <>
-      <Navbar onSignOut={props.out} token={navDefault} />
     <div className='container-lg'>
         <div className='row'>
         <div className='col-5 col-lg-5 d-flex justify-content-end'>

@@ -11,6 +11,7 @@ import EditMeal from './pages/edit-meal';
 import EditExercise from './pages/edit-exercise';
 import Register from './pages/register';
 import SignIn from './pages/sign-in';
+import Navbar from './components/navbar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -51,38 +52,39 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      return <Home out={this.handleSignOut} token={this.state.token} />;
+      return <Home token={this.state.token} />;
     }
     if (route.path === 'calculator') {
-      return <Calculator out={this.handleSignOut} token={this.state.token} />;
+      return <Calculator token={this.state.token} />;
     }
     if (route.path === 'meals') {
-      return <Meals out={this.handleSignOut} token={this.state.token} />;
+      return <Meals token={this.state.token} />;
     }
     if (route.path === 'exercises') {
-      return <Exercises out={this.handleSignOut} token={this.state.token} />;
+      return <Exercises token={this.state.token} />;
     }
     if (route.path === 'codex') {
-      return <Codex out={this.handleSignOut} token={this.state.token} />;
+      return <Codex token={this.state.token} />;
     }
     if (route.path === 'edit-meal') {
-      return <EditMeal out={this.handleSignOut} token={this.state.token} />;
+      return <EditMeal token={this.state.token} />;
     }
     if (route.path === 'edit-exercise') {
-      return <EditExercise out={this.handleSignOut} token={this.state.token} />;
+      return <EditExercise token={this.state.token} />;
     }
     if (route.path === 'register') {
-      return <Register out={this.handleSignOut} token={this.state.token} />;
+      return <Register token={this.state.token} />;
     }
     if (route.path === 'sign-in') {
-      return <SignIn out={this.handleSignOut} token={this.state.token} sign={this.handleSignIn} />;
+      return <SignIn token={this.state.token} sign={this.handleSignIn} />;
     }
-    return <NotFound out={this.handleSignOut} token={this.state.token} />;
+    return <NotFound token={this.state.token} />;
   }
 
   render() {
     if (this.state.isAuthorizing) return null;
     return <>
+      < Navbar onSignOut={this.handleSignOut} token={this.state.token}/>
       {this.renderPage()}
     </>;
   }
