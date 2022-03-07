@@ -11,6 +11,7 @@ import EditMeal from './pages/edit-meal';
 import EditExercise from './pages/edit-exercise';
 import Register from './pages/register';
 import SignIn from './pages/sign-in';
+import Navbar from './components/navbar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ export default class App extends React.Component {
       route: parseRoute(window.location.hash)
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +41,12 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('buddy-access-jwt', token);
     this.setState({ user });
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('buddy-access-jwt');
+    this.setState({ user: null, route: parseRoute(window.location.hash) });
+    window.location.reload();
   }
 
   renderPage() {
@@ -70,12 +78,13 @@ export default class App extends React.Component {
     if (route.path === 'sign-in') {
       return <SignIn token={this.state.token} sign={this.handleSignIn} />;
     }
-    return <NotFound />;
+    return <NotFound token={this.state.token} />;
   }
 
   render() {
     if (this.state.isAuthorizing) return null;
     return <>
+      < Navbar onSignOut={this.handleSignOut} token={this.state.token}/>
       {this.renderPage()}
     </>;
   }
