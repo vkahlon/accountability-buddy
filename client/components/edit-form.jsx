@@ -2,6 +2,7 @@ import React from 'react';
 import EditStats from './edit-stats';
 import Header from './header';
 import EditItem from './edit-item';
+import Loading from './loading';
 export default class EditForm extends React.Component {
   constructor(props) {
     super(props);
@@ -9,7 +10,8 @@ export default class EditForm extends React.Component {
       stage: 0,
       calories: '',
       results: '',
-      item: ''
+      item: '',
+      loading: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,6 +23,7 @@ export default class EditForm extends React.Component {
   }
 
   handleSubmit(event) {
+    this.setState({ loading: true });
     const action = this.props.purpose;
     const id = this.props.item.id;
     event.preventDefault();
@@ -35,11 +38,19 @@ export default class EditForm extends React.Component {
     fetch(`/api/calorie/edit-${action}/${id}`, req)
       .then(res => res.json())
       .then(data => {
-        this.setState({ results: data, stage: 1 });
+        this.setState({ results: data, stage: 1, loading: false });
       });
   }
 
   render() {
+    if (this.state.loading === true) {
+      return (
+        <>
+          <Header header={'Loading'} />
+          < Loading />
+        </>
+      );
+    }
     if (this.state.stage === 1) {
       return (
         <>

@@ -2,6 +2,7 @@ import React from 'react';
 import Stats from './stats';
 import Header from './header';
 import Error from './error-message';
+import Loading from './loading';
 export default class CalorieForm extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +14,8 @@ export default class CalorieForm extends React.Component {
       weight: '',
       height: '',
       age: '',
-      results: ''
+      results: '',
+      loading: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -28,6 +30,7 @@ export default class CalorieForm extends React.Component {
   }
 
   handleSubmit(event) {
+    this.setState({ loading: true });
     event.preventDefault();
     const req = {
       method: 'PUT',
@@ -40,11 +43,19 @@ export default class CalorieForm extends React.Component {
     fetch('/api/calorie/get-calorie', req)
       .then(res => res.json())
       .then(result => {
-        this.setState({ results: result });
+        this.setState({ results: result, loading: false });
       });
   }
 
   render() {
+    if (this.state.loading === true) {
+      return (
+        <>
+          <Header header={'Loading'} />
+          < Loading />
+        </>
+      );
+    }
     if (this.state.results.error === 'an unexpected error occurred') {
       return (
         <>
@@ -92,11 +103,11 @@ export default class CalorieForm extends React.Component {
           <form onSubmit={this.handleSubmit}>
               <div className="custom-control custom-switch  pt-4 pb-4">
                 <input onChange={this.handleChange} type="checkbox" className="custom-control-input" id="customSwitch1" name="metric" />
-                <label className="custom-control-label" htmlFor="customSwitch1">Enable Metric Units</label>
+                <label style={{ cursor: 'pointer' }} className="custom-control-label" htmlFor="customSwitch1">Enable Metric Units</label>
               </div>
               <div className="form-group">
                 <label htmlFor="goal">Goal</label>
-                <select onChange={this.handleChange} className="form-control" required id="goal" name="goal" defaultValue="">
+                <select style={{ cursor: 'pointer' }}onChange={this.handleChange} className="form-control" required id="goal" name="goal" defaultValue="">
                   <option value="" disabled>Select a Goal</option>
                   <option>Cutting</option>
                   <option>Maintainence</option>
@@ -105,7 +116,7 @@ export default class CalorieForm extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="level">Activity Level</label>
-                <select onChange={this.handleChange} className="form-control" required id="level" name="level" defaultValue="">
+                <select style={{ cursor: 'pointer' }} onChange={this.handleChange} className="form-control" required id="level" name="level" defaultValue="">
                   <option value="" disabled>Select Activity Level</option>
                   <option>Sedentary</option>
                   <option>Lightly Active</option>
@@ -115,7 +126,7 @@ export default class CalorieForm extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="gender">Gender</label>
-                <select onChange={this.handleChange} className="form-control" required id="gender" name="gender" defaultValue="">
+                <select style={{ cursor: 'pointer' }} onChange={this.handleChange} className="form-control" required id="gender" name="gender" defaultValue="">
                   <option value="" disabled>Select Gender</option>
                   <option>Male</option>
                   <option>Female</option>
