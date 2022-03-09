@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import Loading from './loading';
 import Redirect from './redirect';
+import Error from './error-message';
 export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +63,7 @@ export default class AuthForm extends React.Component {
     fetch(`/api/auth/${action}`, req)
       .then(res => res.json())
       .then(result => {
-        if (result.error) {
+        if ((result.error) && (action === 'Sign-In')) {
           return this.setState({ loading: false, password: '', userName: '', error: true });
         }
         this.setState({ results: result, loading: false, error: false });
@@ -73,6 +74,14 @@ export default class AuthForm extends React.Component {
   }
 
   render() {
+    if (this.state.results.error === 'an unexpected error occurred') {
+      return (
+        <>
+          <Header header={'We are Sorry!'} />
+          <Error />
+        </>
+      );
+    }
     let guest = null;
     const usernameLength = this.state.userName.length;
     const passwordLength = this.state.password.length;

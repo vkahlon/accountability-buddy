@@ -3,6 +3,7 @@ import Header from './header';
 import Loading from './loading';
 import EditForm from './edit-form';
 import EditStats from './edit-stats';
+import Error from './error-message';
 export default class EditItem extends React.Component {
   constructor(props) {
     super(props);
@@ -70,11 +71,19 @@ export default class EditItem extends React.Component {
   }
 
   render() {
+    if (this.state.data.error === 'an unexpected error occurred') {
+      return (
+        <>
+          <Header header={'We are Sorry!'} />
+          <Error />
+        </>
+      );
+    }
     let emptyWarning = null;
     if (this.props.purpose === 'Meal') {
-      emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4' > <a href="#meals">You have No {this.props.purpose}s</a></p></div></div >;
+      emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4'> <a href="#meals">Add a {this.props.purpose}</a></p></div></div >;
     } else {
-      emptyWarning = <div className='container'><div className='col-lg-11 ml-2'><p className='text-center font-italic mt-4' > <a href="#exercises">You have No {this.props.purpose}s</a></p></div></div >;
+      emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4'> <a href="#exercises">Add a {this.props.purpose}</a></p></div></div >;
     }
     let visualizeData = [...this.state.data];
     visualizeData = visualizeData.map(healthItem => {
