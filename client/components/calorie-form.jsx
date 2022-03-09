@@ -1,6 +1,7 @@
 import React from 'react';
 import Stats from './stats';
 import Header from './header';
+import Error from './error-message';
 export default class CalorieForm extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,14 @@ export default class CalorieForm extends React.Component {
   }
 
   render() {
+    if (this.state.results.error === 'an unexpected error occurred') {
+      return (
+        <>
+          <Header header={'We are Sorry!'} />
+          <Error />
+        </>
+      );
+    }
     const whichUnit = this.state.metric;
     let scaleAlpha;
     let scaleBeta;

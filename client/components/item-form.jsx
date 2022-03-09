@@ -2,6 +2,7 @@ import React from 'react';
 import Stats from './stats';
 import Header from './header';
 import Loading from './loading';
+import Error from './error-message';
 export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +47,14 @@ export default class ItemForm extends React.Component {
         <>
           <Header header={'Loading'} />
           < Loading />
+        </>
+      );
+    }
+    if (this.state.results.error === 'an unexpected error occurred') {
+      return (
+        <>
+          <Header header={'We are Sorry!'} />
+          <Error />
         </>
       );
     }

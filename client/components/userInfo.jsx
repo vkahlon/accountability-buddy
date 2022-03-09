@@ -1,6 +1,7 @@
 import React from 'react';
 import Drag from './drag';
 import Loading from './loading';
+import Error from './error-message';
 export default class UserInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +21,9 @@ export default class UserInfo extends React.Component {
     fetch('api/meals', req)
       .then(response => response.json())
       .then(data => {
+        if (data.error === 'an unexpected error occurred') {
+          return this.setState({ result: 'failure' });
+        }
         mealList = data;
       })
       .then(meal => {
@@ -66,6 +70,13 @@ export default class UserInfo extends React.Component {
   }
 
   render() {
+    if (this.state.result === 'failure') {
+      return (
+        <>
+          <Error />
+        </>
+      );
+    }
     return this.state.isLoading
       ? <Loading></Loading>
       : <Drag codex={this.state.data} calorie={this.state.reserveCalorie} />;
