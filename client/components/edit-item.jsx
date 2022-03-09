@@ -95,7 +95,7 @@ export default class EditItem extends React.Component {
           <div className="row d-flex justify-content-center">
             <div className="d-flex justify-content-start">
               <div className="col-8">
-                <button onClick={() => { this.handleClick(healthItem.id, 'edit'); }} className='btn btn-outline-primary'><i style={{ fontSize: '40px' }}className={healthItem.icon}></i></button>
+                <button onClick={() => { this.handleClick(healthItem.id, 'edit'); }} className='btn btn-outline-primary'><i style={{ fontSize: '2.5rem' }}className={healthItem.icon}></i></button>
               </div>
             </div>
           </div>
