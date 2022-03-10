@@ -71,6 +71,9 @@ A full stack web application for fitness enthusiasts to track calories.
     
 3. Fill in the empty values of the .env.example file and copy it.
 
+    ```shell
+    cp .env.example .env
+    ```
 
 4. Start PostgreSQL.
 
