@@ -79,7 +79,7 @@ A full stack web application for fitness enthusiasts to track calories.
     ```
 5. Create a database (make sure it matches .env.example)
     ```shell
-    createDb yourDatabaseName
+    createdb yourDatabaseName
     ```
 6. Import your database into Postgres.
     ```shell
