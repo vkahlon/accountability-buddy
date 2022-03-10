@@ -9,7 +9,7 @@ export default function Home(props) {
       </div>
       <div className='col-6 col-lg-6'>
             <h2 className="mt-4">Welcome!</h2>
-            <h4>To Version: Priorty 2</h4>
+            <h4>To Version 2</h4>
             <span>Click a tab from the Navbar to Begin</span>
           </div>
         </div>
