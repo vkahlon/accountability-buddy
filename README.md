@@ -24,19 +24,19 @@ A full stack web application for fitness enthusiasts to track calories.
 
 ## Features
 
-- Users can discover the amount of calories that they can eat, based off their activity level and goal.
+- Users can discover the number of calories that they can eat, based on their activity level and goal.
 - Users can create meals, which tracks its total calorie count
-- Users can create exercises, which tracks its total calories burned
+- Users can create exercises, which tracks the total calories burned
 - Users can edit or delete their meals or exercises.
 - Users can drag and drop their meals or exercises, to quickly calculate their calorie count for the day.
 - Users can register to Accountability Buddy
-- Users can sign-in into their Accountability Buddy account.
-- Users can sign-out of their Accountability Buddy account.
+- Users can sign-in to their Accountability Buddy account.
+- Users can sign-out off their Accountability Buddy account.
 
 ## Stretch Features
 
-- Users can share either their meals or exercises to other Accountability Users.
-- Users can upload a image of their meal or exercise.
+- Users can share either their meals or exercises with other Accountability Users.
+- Users can upload an image of their meal or exercise.
 - Users can comment on a shared meal or item.
 
 
