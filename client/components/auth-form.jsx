@@ -97,7 +97,7 @@ export default class AuthForm extends React.Component {
       warningPassword = null;
       guest = <div className="row d-flex justify-content-center mt-4">
         <div className="col-8 d-flex justify-content-center col-lg-4">
-          <a onClick={() => { this.handleClick('Guest', 'password'); }} className="mr-3 text-primary" style={{ cursor: 'pointer' }}>Sign-In as Guest</a>
+          <a onClick={() => { this.handleClick('Guest', 'password1'); }} className="mr-3 text-primary" style={{ cursor: 'pointer' }}>Sign-In as Guest</a>
         </div>
       </div>;
     }
