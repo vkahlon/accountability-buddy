@@ -88,7 +88,7 @@ A full stack web application for fitness enthusiasts to track calories.
     ```shell
     npm run db:import
     ```   
-7.  Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
+7.  Start the project. Once started, you can view the application by opening http://localhost:3000 in your browser.
 
     ```shell
     npm run dev
