@@ -59,7 +59,7 @@ A full stack web application for fitness enthusiasts to track calories.
 1. Clone the repository.
 
     ```shell
-    git clone https://github.com/vkahlon/Accountability-Buddy.git
+    git clone https://github.com/vkahlon/accountability-buddy.git
     cd accountability-buddy
     ```
 
