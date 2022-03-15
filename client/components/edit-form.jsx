@@ -3,6 +3,7 @@ import EditStats from './edit-stats';
 import Header from './header';
 import EditItem from './edit-item';
 import Loading from './loading';
+import BannedWords from 'profane-words';
 export default class EditForm extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +12,8 @@ export default class EditForm extends React.Component {
       calories: '',
       results: '',
       item: '',
-      loading: false
+      loading: false,
+      invalid: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,10 +25,14 @@ export default class EditForm extends React.Component {
   }
 
   handleSubmit(event) {
+    if (event !== undefined) event.preventDefault();
     this.setState({ loading: true });
+    const nameCheck = this.state.item;
+    if (BannedWords.includes(nameCheck.toLowerCase())) {
+      return this.setState({ loading: false, invalid: true });
+    }
     const action = this.props.purpose;
     const id = this.props.item.id;
-    event.preventDefault();
     const req = {
       method: 'PUT',
       headers: {
@@ -38,7 +44,7 @@ export default class EditForm extends React.Component {
     fetch(`/api/calorie/edit-${action}/${id}`, req)
       .then(res => res.json())
       .then(data => {
-        this.setState({ results: data, stage: 1, loading: false });
+        this.setState({ results: data, stage: 1, loading: false, invalid: false });
       });
   }
 
@@ -79,13 +85,15 @@ export default class EditForm extends React.Component {
     if (calorieLength > 4) {
       warningCal = <p className='text-danger'>Invalid Entry</p>;
     }
+    if (this.state.invalid) {
+      warningMeal = <p className='text-warning'>Inappropriate Input</p>;
+    }
     return (
       <>
         <Header header={this.props.status} />
         <div className='container '>
           <div className='row d-flex justify-content-center'>
             <div className='col-10 d-flex justify-content-center col-lg-8' style={{ backgroundColor: '#F5FCFF', borderRadius: '25px' }}>
-
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group mt-3">
                   <label htmlFor="name">Edit {this.props.purpose} Name</label>
