@@ -3,6 +3,7 @@ import Stats from './stats';
 import Header from './header';
 import Loading from './loading';
 import Error from './error-message';
+import BannedWords from 'profane-words';
 export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +11,8 @@ export default class ItemForm extends React.Component {
       loading: false,
       results: '',
       calories: '',
-      item: ''
+      item: '',
+      invalid: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,9 +24,13 @@ export default class ItemForm extends React.Component {
   }
 
   handleSubmit(event) {
+    if (event !== undefined) event.preventDefault();
     this.setState({ loading: true });
+    const nameCheck = this.state.item;
+    if (BannedWords.includes(nameCheck.toLowerCase())) {
+      return this.setState({ loading: false, invalid: true });
+    }
     const action = this.props.purpose;
-    event.preventDefault();
     const req = {
       method: 'POST',
       headers: {
@@ -37,7 +43,7 @@ export default class ItemForm extends React.Component {
     fetch(`/api/calorie/add-${action}`, req)
       .then(res => res.json())
       .then(result => {
-        this.setState({ results: result, loading: false });
+        this.setState({ results: result, loading: false, invalid: false });
       });
   }
 
@@ -66,6 +72,7 @@ export default class ItemForm extends React.Component {
         </>
       );
     }
+    let invalidWarning;
     const itemLength = this.state.item.length;
     const calorieLength = this.state.calories.length;
     let warningCal = null;
@@ -79,13 +86,16 @@ export default class ItemForm extends React.Component {
     if (calorieLength > 4) {
       warningCal = <p className='text-danger'>Invalid Entry</p>;
     }
+    if (this.state.invalid) {
+      warningMeal = <p className='text-warning'>Inappropriate Input</p>;
+    }
     return (
       <>
       <Header header={this.props.status}/>
         <div className='container '>
           <div className='row d-flex justify-content-center'>
+            {invalidWarning}
             <div className='col-10 d-flex justify-content-center col-lg-8' style={{ backgroundColor: '#F5FCFF', borderRadius: '25px' }}>
-
         <form onSubmit={this.handleSubmit}>
           <div className="form-group mt-3">
             <label htmlFor="name">{this.props.purpose} Name</label>

@@ -3,6 +3,8 @@ import Header from './header';
 import Loading from './loading';
 import Redirect from './redirect';
 import Error from './error-message';
+import Inappropriate from './inappropriate';
+import BannedWords from 'profane-words';
 export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +13,8 @@ export default class AuthForm extends React.Component {
       results: '',
       password: '',
       userName: '',
-      error: false
+      error: false,
+      invalid: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,9 +53,13 @@ export default class AuthForm extends React.Component {
   }
 
   handleSubmit(event) {
-    this.setState({ loading: true });
-    const action = this.props.purpose;
     if (event !== undefined) event.preventDefault();
+    this.setState({ loading: true });
+    const nameCheck = this.state.userName;
+    if (BannedWords.includes(nameCheck.toLowerCase())) {
+      return this.setState({ loading: false, invalid: true });
+    }
+    const action = this.props.purpose;
     const req = {
       method: 'POST',
       headers: {
@@ -64,7 +71,7 @@ export default class AuthForm extends React.Component {
       .then(res => res.json())
       .then(result => {
         if ((result.error) && (action === 'Sign-In')) {
-          return this.setState({ loading: false, password: '', userName: '', error: true });
+          return this.setState({ loading: false, password: '', userName: '', error: true, invalid: false });
         }
         this.setState({ results: result, loading: false, error: false });
         if (result.user && result.token) {
@@ -137,6 +144,9 @@ export default class AuthForm extends React.Component {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>;
+    }
+    if (this.state.invalid) {
+      invalidWarning = <Inappropriate />;
     }
     return (
       <>
