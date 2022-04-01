@@ -10,12 +10,11 @@ const Container = styled.div`
   background-color: ${props => (props.isDragging ? 'skyblue' : 'white')};
 `;
 
-export default class Item extends React.Component {
-  render() {
-    return (
+export default function Item(props) {
+  return (
       <Draggable
-      draggableId={this.props.item.id}
-      index={this.props.index}>
+      draggableId={props.item.id}
+      index={props.index}>
         {(provided, snapshot) => (
           <Container
             {...provided.draggableProps}
@@ -23,12 +22,11 @@ export default class Item extends React.Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <div className='row d-flex justify-content-center'><img style={{ width: '30%' }} src={this.props.item.icon} alt="item-icon" /></div>
-            <div className='row d-flex justify-content-center'>{this.props.item.content}</div>
-            <div className='row d-flex justify-content-center'>{` ${this.props.item.calories} cal`}</div>
+            <div className='row d-flex justify-content-center'><img style={{ width: '30%' }} src={props.item.icon} alt="item-icon" /></div>
+            <div className='row d-flex justify-content-center'>{props.item.content}</div>
+            <div className='row d-flex justify-content-center'>{` ${props.item.calories} cal`}</div>
           </Container>
         )}
       </Draggable>
-    );
-  }
+  );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 export default function EditStats(props) {
-  const itemCalories = this.props.stats.calories;
+  const itemCalories = props.stats.calories;
   let itemIcon = null;
   let itemName = null;
   if (props.purpose === 'Meal') {

@@ -9,19 +9,17 @@ const ItemList = styled.div`
   background-color: ${props => (props.isDraggingOver ? 'lightgreen' : 'white')};
   min-height: 100px;
 `;
-
-export default class Column extends React.Component {
-  render() {
-    return (
+export default function Column(props) {
+  return (
       <div className='m-3' style={{ margin: '8px', border: '4px solid rgb(232,232,232)', borderRadius: '5px', width: '140px' }}>
-        <h4 className='mt-2 text-center' style={{ color: 'rgb(24, 49, 83)' }}>{this.props.column.title}</h4>
-        <Droppable droppableId={this.props.column.id}>
+        <h4 className='mt-2 text-center' style={{ color: 'rgb(24, 49, 83)' }}>{props.column.title}</h4>
+        <Droppable droppableId={props.column.id}>
           {(provided, snapshot) => (
             <ItemList ref={provided.innerRef}
              {...provided.droppableProps}
              isDraggingOver={snapshot.isDraggingOver}
              >
-              {this.props.item.map((item, index) => (
+              {props.item.map((item, index) => (
                 <Item key={item.id} item={item} index={index} />
               ))}
               {provided.placeholder}
@@ -29,6 +27,5 @@ export default class Column extends React.Component {
           )}
         </Droppable>
       </div>
-    );
-  }
+  );
 }
