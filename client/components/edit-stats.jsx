@@ -1,17 +1,16 @@
 import React from 'react';
-export default class EditStats extends React.Component {
-  render() {
-    const itemCalories = this.props.stats.calories;
-    let itemIcon = null;
-    let itemName = null;
-    if (this.props.purpose === 'Meal') {
-      itemName = this.props.stats.mealName;
-      itemIcon = 'fa-solid fa-utensils';
-    } else {
-      itemName = this.props.stats.exerciseName;
-      itemIcon = 'fa-solid fa-dumbbell';
-    }
-    return (
+export default function EditStats(props) {
+  const itemCalories = this.props.stats.calories;
+  let itemIcon = null;
+  let itemName = null;
+  if (props.purpose === 'Meal') {
+    itemName = props.stats.mealName;
+    itemIcon = 'fa-solid fa-utensils';
+  } else {
+    itemName = props.stats.exerciseName;
+    itemIcon = 'fa-solid fa-dumbbell';
+  }
+  return (
         <div className="container">
           <div className="row d-flex justify-content-center mt-2">
             <div className="d-flex justify-content-center">
@@ -32,6 +31,5 @@ export default class EditStats extends React.Component {
             </div>
           </div>
         </div>
-    );
-  }
+  );
 }
