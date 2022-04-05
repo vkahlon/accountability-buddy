@@ -26,13 +26,13 @@ export default function Stats(props) {
       </div>
     );
   }
-  const itemCalories = props.stats.results.calories;
+  const itemCalories = props.stats.calories;
 
-  if (props.stats.results.exerciseName !== undefined) {
-    itemName = props.stats.results.exerciseName;
+  if (props.stats.exerciseName !== undefined) {
+    itemName = props.stats.exerciseName;
     itemIcon = 'fa-solid fa-dumbbell';
   } else {
-    itemName = props.stats.results.mealName;
+    itemName = props.stats.mealName;
     itemIcon = 'fa-solid fa-utensils';
   }
   if (props.purpose === 'item') {
