@@ -1,15 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Column from './column';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-export default class Drag extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = this.props.codex;
-    this.onDragEnd = this.onDragEnd.bind(this);
-  }
+export default function Drag(props) {
+  const [codex, setCodex] = useState(props.codex);
 
-  onDragEnd(result) {
+  const onDragEnd = result => {
     const { destination, source } = result;
     if (!destination) {
       return;
@@ -21,8 +17,8 @@ export default class Drag extends React.Component {
     ) {
       return;
     }
-    const start = this.state.columns[source.droppableId];
-    const finish = this.state.columns[destination.droppableId];
+    const start = codex.columns[source.droppableId];
+    const finish = codex.columns[destination.droppableId];
     if (start === finish) {
       const newResult = Array.from(start.healthItemIds);
       const [removed] = newResult.splice(result.source.index, 1);
@@ -34,13 +30,13 @@ export default class Drag extends React.Component {
       };
 
       const newState = {
-        ...this.state,
+        ...codex,
         columns: {
-          ...this.state.columns,
+          ...codex.columns,
           [newColumn.id]: newColumn
         }
       };
-      return this.setState(newState);
+      setCodex(newState);
     }
     const startItemIds = Array.from(start.healthItemIds);
     const indexThatLeft = startItemIds.splice(source.index, 1);
@@ -55,14 +51,14 @@ export default class Drag extends React.Component {
       healthItemIds: finishItemIds
     };
     const newState = {
-      ...this.state,
+      ...codex,
       columns: {
-        ...this.state.columns,
+        ...codex.columns,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish
       }
     };
-    const dailyCalorie = this.props.calorie;
+    const dailyCalorie = props.calorie;
     const allColumn3Items = newState.columns['column-3'].healthItemIds;
     let allColumn3Calories = 0;
     for (let i = 0; i < allColumn3Items.length; i++) {
@@ -70,37 +66,35 @@ export default class Drag extends React.Component {
     }
     const currentCodexCalorie = dailyCalorie + allColumn3Calories;
     newState.dailyCalorie = currentCodexCalorie;
-    return this.setState(newState);
-  }
+    setCodex(newState);
+  };
 
-  render() {
-    const exerciseListLength = this.state.columns['column-1'].healthItemIds.length;
-    const mealListLength = this.state.columns['column-2'].healthItemIds.length;
-    const calculatorListLength = this.state.columns['column-3'].healthItemIds.length;
-    let calorieStatement = 'Calories Remaining';
-    let emptyWarning = null;
-    let calorieLimit = this.state.dailyCalorie;
-    let calorieCurrentDescription = 'text-center';
-    if (exerciseListLength === 0 && mealListLength === 0 && calculatorListLength === 0) {
-      emptyWarning = <p className='text-center font-italic mt-4'>You have No <a href="#meals">Meals</a> or <a href="#exercises">Exercises</a> Added</p>;
-    }
-    if (this.state.dailyCalorie < 0) {
-      calorieStatement = 'Calories Over Limit';
-      calorieLimit = calorieLimit * -1;
-      calorieCurrentDescription = 'text-center text-danger';
-    }
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
+  const exerciseListLength = codex.columns['column-1'].healthItemIds.length;
+  const mealListLength = codex.columns['column-2'].healthItemIds.length;
+  const calculatorListLength = codex.columns['column-3'].healthItemIds.length;
+  let calorieStatement = 'Calories Remaining';
+  let emptyWarning = null;
+  let calorieLimit = codex.dailyCalorie;
+  let calorieCurrentDescription = 'text-center';
+  if (exerciseListLength === 0 && mealListLength === 0 && calculatorListLength === 0) {
+    emptyWarning = <p className='text-center font-italic mt-4'>You have No <a href="#meals">Meals</a> or <a href="#exercises">Exercises</a> Added</p>;
+  }
+  if (codex.dailyCalorie < 0) {
+    calorieStatement = 'Calories Over Limit';
+    calorieLimit = calorieLimit * -1;
+    calorieCurrentDescription = 'text-center text-danger';
+  }
+  return (
+      <DragDropContext onDragEnd={onDragEnd}>
         <h3 className={calorieCurrentDescription}>{calorieLimit} {calorieStatement}</h3>
         {emptyWarning}
         <div className='row d-flex justify-content-center'>
-        {this.state.columnOrder.map(columnId => {
-          const column = this.state.columns[columnId];
-          const items = column.healthItemIds;
-          return <Column key={column.id} column={column} item={items} />;
-        })}
+          {codex.columnOrder.map(columnId => {
+            const column = codex.columns[columnId];
+            const items = column.healthItemIds;
+            return <Column key={column.id} column={column} item={items} />;
+          })}
         </div>
       </DragDropContext>
-    );
-  }
+  );
 }
