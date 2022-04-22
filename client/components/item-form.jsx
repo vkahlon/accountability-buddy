@@ -11,19 +11,6 @@ export default function ItemForm(props) {
   const [calories, setCalories] = useState('');
   const [invalid, setInvalid] = useState(false);
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     loading: false,
-  //     results: '',
-  //     calories: '',
-  //     item: '',
-  //     invalid: false
-  //   };
-  //   this.handleChange = this.handleChange.bind(this);
-  //   this.handleSubmit = this.handleSubmit.bind(this);
-  // }
-
   const postItem = event => {
     if (event !== undefined) event.preventDefault();
     setLoading(true);
