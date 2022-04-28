@@ -9,6 +9,7 @@ const ItemList = styled.div`
   background-color: ${props => (props.isDraggingOver ? 'lightgreen' : 'white')};
   min-height: 100px;
 `;
+
 export default function Column(props) {
   return (
       <div className='m-3' style={{ margin: '8px', border: '4px solid rgb(232,232,232)', borderRadius: '5px', width: '140px' }}>
