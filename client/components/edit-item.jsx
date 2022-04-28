@@ -1,101 +1,94 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './header';
 import Loading from './loading';
 import EditForm from './edit-form';
 import EditStats from './edit-stats';
 import Error from './error-message';
-export default class EditItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      retrieving: true,
-      data: '',
-      objective: '',
-      id: 0
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDeletion = this.handleDeletion.bind(this);
-  }
+export default function EditItem(props) {
+  const [isRetrieving, setRetrieving] = useState(true);
+  const [data, setData] = useState('');
+  const [objective, setObjective] = useState('');
+  const [results, setResults] = useState('');
+  const [item, setItem] = useState('');
 
-  handleDeletion(item) {
-    const action = this.props.purpose;
-    const id = item.id;
+  const handleDeletion = item => {
+    const action = props.purpose;
+    const body = { data: data, id: item.id };
     event.preventDefault();
     const req = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'X-Access-Token': `${this.props.token}`
+        'X-Access-Token': `${props.token}`
       },
-      body: JSON.stringify(this.state)
+      body: JSON.stringify(body)
     };
-    fetch(`/api/delete-${action}/${id}`, req)
+    fetch(`/api/delete-${action}/${item.id}`, req)
       .then(res => res.json())
       .then(data => {
         const [deletedItem] = data;
-        this.setState({ results: deletedItem, objective: 'deleted' });
+        setResults(deletedItem);
+        setObjective('deleted');
       });
-  }
+  };
 
-  handleClick(id, objective) {
-    const currentStateList = [...this.state.data];
+  const handleClick = (id, objective) => {
+    const currentStateList = [...data];
     let selectedItem = null;
-    let newState = null;
     for (let i = 0; i < currentStateList.length; i++) {
       if (id === currentStateList[i].id) {
         selectedItem = currentStateList[i];
       }
     } if (objective === 'edit') {
-      newState = { item: selectedItem, objective: objective, id: id };
+      setObjective(objective);
+      setItem(selectedItem);
     } else {
-      newState = { item: selectedItem, id: id };
+      setItem(selectedItem);
     }
-    this.setState(newState);
-  }
+  };
 
-  componentDidMount() {
-    const purpose = this.props.purpose;
+  useEffect(() => {
+    const purpose = props.purpose;
     const req = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-Access-Token': `${this.props.token}`
+        'X-Access-Token': `${props.token}`
       }
     };
     fetch(`/api/edit-${purpose}-items`, req)
       .then(res => res.json())
       .then(result => {
-        const newState = { retrieving: false, data: result };
-        this.setState(newState);
+        setData(result);
+        setRetrieving(false);
       });
-  }
+  }, []);
 
-  render() {
-    if (this.state.data.error === 'an unexpected error occurred') {
-      return (
+  if (data.error === 'an unexpected error occurred') {
+    return (
         <>
           <Header header={'We are Sorry!'} />
           <Error />
         </>
-      );
-    }
-    let emptyWarning = null;
-    if (this.props.purpose === 'Meal') {
-      emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4'> <a href="#meals">Add a {this.props.purpose}</a></p></div></div >;
-    } else {
-      emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4'> <a href="#exercises">Add a {this.props.purpose}</a></p></div></div >;
-    }
-    let visualizeData = [...this.state.data];
-    visualizeData = visualizeData.map(healthItem => {
-      return (
+    );
+  }
+  let emptyWarning = null;
+  if (props.purpose === 'Meal') {
+    emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4'> <a href="#meals">Add a {props.purpose}</a></p></div></div >;
+  } else {
+    emptyWarning = <div className='container'><div className='col-lg-11'><p className='text-center font-italic mt-4'> <a href="#exercises">Add a {props.purpose}</a></p></div></div >;
+  }
+  let visualizeData = [...data];
+  visualizeData = visualizeData.map(healthItem => {
+    return (
         <div key={healthItem.id} className="m-3 col-4 col-md-3 col-lg-2 rounded" style={{ border: '2px solid rgb(52,58,63)' }}>
           <span className='row d-flex justify-content-end'>
-            <button onClick={() => { this.handleClick(healthItem.id); }} style={{ lineHeight: '.08' }} className='btn btn-outline-danger mr-1 mt-2 p-2' data-toggle="modal" data-target="#exampleModal">X</button>
+            <button onClick={() => { handleClick(healthItem.id); }} style={{ lineHeight: '.08' }} className='btn btn-outline-danger mr-1 mt-2 p-2' data-toggle="modal" data-target="#exampleModal">X</button>
           </span>
           <div className="row d-flex justify-content-center">
             <div className="d-flex justify-content-start">
               <div className="col-8">
-                <button onClick={() => { this.handleClick(healthItem.id, 'edit'); }} className='btn btn-outline-primary'><i style={{ fontSize: '2.5rem' }}className={healthItem.icon}></i></button>
+                <button onClick={() => { handleClick(healthItem.id, 'edit'); }} className='btn btn-outline-primary'><i style={{ fontSize: '2.5rem' }}className={healthItem.icon}></i></button>
               </div>
             </div>
           </div>
@@ -108,61 +101,60 @@ export default class EditItem extends React.Component {
             </div>
           </div>
         </div>
-      );
-    });
-    if (this.state.retrieving) {
-      return (
+    );
+  });
+  if (isRetrieving) {
+    return (
         <>
-        <Header header={this.props.status}></Header>
+        <Header header={props.status}></Header>
         <Loading></Loading>
         </>
-      );
-    } else if (this.state.data.length === 0) {
-      return (
+    );
+  } else if (data.length === 0) {
+    return (
     <>
-      <Header header={`No ${this.props.purpose}s`} />
+      <Header header={`No ${props.purpose}s`} />
       {emptyWarning}
     </>
-      );
-    } else if (this.state.objective === '') {
-      return (
+    );
+  } else if (objective === '') {
+    return (
           <>
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLongTitle">Delete this {this.props.purpose}?</h5>
+                    <h5 className="modal-title" id="exampleModalLongTitle">Delete this {props.purpose}?</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-footer">
-                    <button onClick={() => { this.handleDeletion(this.state.item); }} type="button" className="btn btn-danger" data-dismiss="modal" aria-label="Close">Delete</button>
+                    <button onClick={() => { handleDeletion(item); }} type="button" className="btn btn-danger" data-dismiss="modal" aria-label="Close">Delete</button>
                   </div>
                 </div>
               </div>
             </div>
-            <Header header={this.props.status}></Header>
+            <Header header={props.status}></Header>
             <div className='container'>
               <div className='row d-flex justify-content-center'>
                 {visualizeData}
               </div>
             </div>
           </>
-      );
-    } else if (this.state.objective === 'edit') {
-      return (
+    );
+  } else if (objective === 'edit') {
+    return (
             <>
-              <EditForm token={this.props.token} user={this.props.user} item={this.state.item} purpose={this.props.purpose} status={`Edit ${this.props.purpose}`}></EditForm>
+              <EditForm token={props.token} user={props.user} item={item} purpose={props.purpose} status={`Edit ${props.purpose}`}></EditForm>
             </>
-      );
-    } else if (this.state.objective === 'deleted') {
-      return (
+    );
+  } else if (objective === 'deleted') {
+    return (
           <>
-            <Header header={`${this.props.purpose} Deleted`} />
-            <EditStats stats={this.state.results} purpose={this.props.purpose} />
+            <Header header={`${props.purpose} Deleted`} />
+            <EditStats stats={results} purpose={props.purpose} />
           </>
-      );
-    }
+    );
   }
 }
