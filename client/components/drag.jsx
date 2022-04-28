@@ -3,7 +3,7 @@ import Column from './column';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 export default function Drag(props) {
-  const [codex, setCodex] = useState(props.codex);
+  const [codex, setCodex] = useState(props.codex.data);
 
   const onDragEnd = result => {
     const { destination, source } = result;
@@ -68,7 +68,6 @@ export default function Drag(props) {
     newState.dailyCalorie = currentCodexCalorie;
     setCodex(newState);
   };
-
   const exerciseListLength = codex.columns['column-1'].healthItemIds.length;
   const mealListLength = codex.columns['column-2'].healthItemIds.length;
   const calculatorListLength = codex.columns['column-3'].healthItemIds.length;
