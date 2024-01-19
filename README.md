@@ -18,10 +18,6 @@ A full stack web application for fitness enthusiasts to track calories.
 - [React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)
 - [Styled Components](https://github.com/styled-components/styled-components)
 
-## Live Demo
-
-[Try out Accountability Buddy](https://accountability--buddy.herokuapp.com/)
-
 ## Features
 
 - Users can discover the number of calories that they can eat, based on their activity level and goal.
